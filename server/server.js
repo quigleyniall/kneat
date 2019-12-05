@@ -11,10 +11,22 @@ api.use(bodyParser.json({ limit: '5mb' }));
 axios.defaults.baseURL = 'http://swapi.co/api';
 
 api.get('/starships', async (req, res) => {
-  const request = await axios.get('/starships');
+  const { page } = req.query;
+  let allResults = [];
+  if (page !== 'all') {
+    const request = await axios.get(`/starships?page=${page}`);
+    allResults = await request.data.results;
+  } else {
+    let pageNumber = 1;
+    while (pageNumber !== 'last') {
+      const request = await axios.get(`/starships?page=${pageNumber}`);
+      const response = await request.data;
+      allResults = [...allResults, ...response.results];
+      response.next ? pageNumber++ : (pageNumber = 'last');
+    }
+  }
 
-  const response = await request.data;
-  return res.json(response);
+  return res.json(allResults);
 });
 
 api.listen(8080, () => {
