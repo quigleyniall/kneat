@@ -1,9 +1,27 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { shallow } from 'enzyme';
 import App from './App';
+import { findByTestAttr } from './utils/test';
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('Home Page', () => {
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = shallow(<App />);
+  });
+
+  test('renders without crashing', () => {
+    const app = findByTestAttr(wrapper, 'app');
+    expect(app.length).toBe(1);
+  });
+
+  test('renders the searchbar', () => {
+    const searchBar = findByTestAttr(wrapper.dive(), 'search-bar');
+    expect(searchBar.length).toBe(1);
+  });
+
+  test('renders the results', () => {
+    const results = findByTestAttr(wrapper.dive(), 'results');
+    expect(results.length).toBe(1);
+  });
 });
