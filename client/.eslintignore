@@ -1,0 +1,6 @@
+src/serviceWorker.ts
+src/**/**/*.test.tsx
+src/*.test.tsx
+src/util/test.ts
+src/test
+jest.config.js
