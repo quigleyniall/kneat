@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://swapi.co/api';
+axios.defaults.baseURL = 'http://localhost:8080';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
