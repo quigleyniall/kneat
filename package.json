@@ -17,6 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "lint": "eslint src/*.{ts,tsx}",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
     "enzyme": "^3.10.0",
