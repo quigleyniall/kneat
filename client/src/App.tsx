@@ -1,13 +1,32 @@
 import React from 'react';
-import SearchBar from './components/SearchBar';
-import Results from './components/Results';
 import axios from 'axios';
-import { checkResupply } from './utils/resupply';
+import {
+  AddRemoveFromTable,
+  Page,
+  TableWrapper,
+  TableRow,
+  Heading,
+  SearchBar
+} from './components';
+import { checkTimeToResupply } from './utils/resupply';
+import {
+  filterObjectKeysInArray,
+  starShipFilterKeys
+} from './utils/tableHelper';
+import {
+  sortAlphabetically,
+  sortNummerically,
+  sortConsumables
+} from './utils/sorting';
 
 interface State {
   distance: string;
   starShips: any;
-  noOfResults: string | number;
+  starShipsFiltered: any;
+  lastSorted: string;
+  allResponseKeys: string[];
+  activeDataKeys: string[];
+  loading: boolean;
 }
 
 class App extends React.Component<any, State> {
@@ -15,32 +34,42 @@ class App extends React.Component<any, State> {
     super(props);
     this.state = {
       distance: '',
+      allResponseKeys: starShipFilterKeys,
+      activeDataKeys: [
+        'name',
+        'model',
+        'consumables',
+        'MGLT',
+        'number_of_resupplies'
+      ],
+      lastSorted: '',
+      starShipsFiltered: [{}],
       starShips: [],
-      noOfResults: 1
+      loading: false
     };
   }
 
-  componentDidMount() {
-    this.getData();
-  }
-
   getData = async () => {
-    const { noOfResults } = this.state;
-    const res = await axios.get(`/starships?page=${noOfResults}`);
-    const { data } = await res;
-    this.setState({ starShips: data });
+    this.setState({ loading: true });
+    const req = await axios.get('/starships');
+    const res = await req.data;
+    return this.setState({ starShips: res, loading: false });
   };
 
-  search = () => {
-    const { distance, starShips } = this.state;
-    const starShipsWithResupplies = starShips.map(ship => {
+  search = async () => {
+    const { distance, starShips, activeDataKeys } = this.state;
+
+    if (starShips.length === 0) {
+      await this.getData();
+    }
+    const starShipsWithResupplies = this.state.starShips.map(ship => {
       const { consumables, MGLT } = ship;
       if (consumables === 'unknown' || MGLT === 'unknown') {
         ship.number_of_resupplies = 'unknown';
         return ship;
       }
       const distancePerHour = +distance / MGLT;
-      const timeToResupply = checkResupply(consumables);
+      const timeToResupply = checkTimeToResupply(consumables);
 
       ship.number_of_resupplies = Math.floor(
         distancePerHour / timeToResupply
@@ -48,36 +77,107 @@ class App extends React.Component<any, State> {
 
       return ship;
     });
-    this.setState({ starShips: starShipsWithResupplies });
+
+    this.setState({
+      starShipsFiltered: sortNummerically(
+        filterObjectKeysInArray(starShipsWithResupplies, activeDataKeys),
+        'number_of_resupplies'
+      )
+    });
   };
 
   onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ distance: event.target.value });
   };
 
-  setNoResults = async () => {
-    await this.setState({ noOfResults: 'all' });
-    this.getData();
+  onCheckBoxChange = event => {
+    const { activeDataKeys, starShips } = this.state;
+    const filterKey = event.target.value.toString();
+    const newActiveKeys = activeDataKeys.includes(filterKey)
+      ? activeDataKeys.filter(key => key !== filterKey)
+      : activeDataKeys.concat(filterKey);
+    this.setState({
+      starShipsFiltered: filterObjectKeysInArray(starShips, newActiveKeys),
+      activeDataKeys: newActiveKeys
+    });
   };
 
-  renderResults = () => {
-    const { starShips } = this.state;
-    return starShips.map(ship => (
-      <Results data-test="results" starShip={ship} />
-    ));
+  sortBy = name => {
+    const { starShipsFiltered, lastSorted } = this.state;
+
+    const sortNummericallyColumns = [
+      'MGLT',
+      'cost_in_credits',
+      'number_of_resupplies',
+      'length',
+      'max_atmosphering_speed',
+      'crew',
+      'passengers',
+      'cargo_capacity',
+      'hyperdrive_rating'
+    ];
+    if (lastSorted === name) {
+      return this.setState({
+        starShipsFiltered: starShipsFiltered.reverse(),
+        lastSorted: ''
+      });
+    }
+    if (sortNummericallyColumns.includes(name)) {
+      return this.setState({
+        starShipsFiltered: sortNummerically(starShipsFiltered, name),
+        lastSorted: name
+      });
+    }
+    if (name === 'consumables') {
+      sortConsumables(starShipsFiltered, name);
+      return this.setState({
+        lastSorted: name
+      });
+    }
+    this.setState({
+      starShipsFiltered: sortAlphabetically(starShipsFiltered, name),
+      lastSorted: name
+    });
   };
 
   render() {
+    const {
+      starShipsFiltered,
+      allResponseKeys,
+      activeDataKeys,
+      starShips,
+      distance,
+      loading
+    } = this.state;
     return (
-      <div className="App" data-test="app">
+      <Page>
+        <Heading text="Enter the distance you wish to travel to calculate the number of re-supplies needed" />
         <SearchBar
           data-test="search-bar"
           onPress={this.search}
           onSearchChange={this.onSearchChange}
-          setNoResults={this.setNoResults}
+          searching={loading}
+          searchTerm={distance}
         />
-        {this.renderResults()}
-      </div>
+        {starShips.length > 0 ? (
+          <>
+            <AddRemoveFromTable
+              tableHeaders={allResponseKeys}
+              checkBoxActive={activeDataKeys}
+              onCheckboxChange={this.onCheckBoxChange}
+            />
+            <TableWrapper
+              headers={starShipsFiltered[0]}
+              sortResult={this.sortBy}
+            >
+              {starShipsFiltered.map((ship, index) => (
+                <TableRow key={index} data-test="results" rowData={ship} />
+              ))}
+            </TableWrapper>
+          </>
+        ) : null}
+        {loading && <h4>Please wait while we reach out to the server!</h4>}
+      </Page>
     );
   }
 }
