@@ -1,0 +1,23 @@
+.page-wrapper {
+  box-sizing: border-box;
+  width: 100%;
+
+  .page {
+    display: flex;
+    background: #f2f2f0;
+
+    h2 {
+      font-size: 18px;
+    }
+
+    .main {
+      box-sizing: border-box;
+      width: calc(100% - 200px);
+      position: absolute;
+      top: 100px;
+      right: 0;
+      left: 200px;
+      padding: 50px;
+    }
+  }
+}
