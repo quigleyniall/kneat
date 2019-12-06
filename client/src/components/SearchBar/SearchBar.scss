@@ -1,0 +1,12 @@
+.flex {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  input {
+    width: 40%;
+    margin-right: 10px;
+    padding: 8px;
+    outline: none;
+  }
+}
