@@ -1,0 +1,39 @@
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-weight: 400;
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+.text {
+	&-uppercase {
+		text-transform: uppercase;
+	}
+	&-center {
+		text-align: center;
+	}
+}
+
+.fw {
+	&-light {
+		font-weight: 200;
+	}
+	&-normal {
+		font-weight: 400;
+	}
+	&-bold {
+		font-weight: 600;
+	}
+}
+
+.primary-color {
+	color: var(--primary-color);
+}
+.gray {
+	color: var(--gray);
+}
+.dark-gray {
+	color: var(--dark-gray);
+}
