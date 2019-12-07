@@ -13,8 +13,10 @@ const TableWrapper = ({ children, headers, sortResult }: IProps) => (
   <table>
     <thead>
       <tr>
-        {Object.keys(headers).map(heading => (
-          <th onClick={() => sortResult(heading)}>{format(heading)}</th>
+        {Object.keys(headers).map((heading, index) => (
+          <th onClick={() => sortResult(heading)} key={index}>
+            {format(heading)}
+          </th>
         ))}
       </tr>
     </thead>

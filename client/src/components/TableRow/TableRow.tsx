@@ -6,7 +6,9 @@ export interface Trow {
 }
 
 const TableRow = ({ rowData }: Trow) => {
-  const tableData = Object.values(rowData).map(data => <td>{data}</td>);
+  const tableData = Object.values(rowData).map((data, index) => (
+    <td key={index}>{data}</td>
+  ));
 
   return <tr>{tableData}</tr>;
 };
