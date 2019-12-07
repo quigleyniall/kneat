@@ -1,6 +1,8 @@
 import { ActionTypes, Action } from '../actions';
 
-const loading = (state: boolean = false, action: Action) => {
+const initialState = false;
+
+const loading = (state: boolean = initialState, action: Action) => {
   switch (action.type) {
     case ActionTypes.loading:
       return action.payload;
