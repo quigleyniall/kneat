@@ -20,8 +20,9 @@ const AddRemoveFromTable = ({
       btnText="Add/Remove Data From Table"
       renderData={tableHeaders}
       render={({ renderData }: { renderData: string[] }) => {
-        return renderData.map(key => (
+        return renderData.map((key, index) => (
           <CheckBox
+            key={index}
             name="columns"
             onCheckboxChange={onCheckboxChange}
             check={key}
