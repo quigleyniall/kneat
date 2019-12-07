@@ -1,10 +1,11 @@
 import React from 'react';
 import { format } from '../../utils/formatText';
 import './Table.scss';
+import { StarShipFiltered } from '../../interfaces/starship';
 
 interface IProps {
   children: React.ReactNode;
-  headers: { [x: string]: string | number };
+  headers: StarShipFiltered;
   sortResult: (name: string) => void;
 }
 

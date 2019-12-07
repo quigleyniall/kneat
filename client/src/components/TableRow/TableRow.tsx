@@ -1,7 +1,8 @@
 import React from 'react';
+import { StarShipFiltered } from '../../interfaces/starship';
 
 export interface Trow {
-  rowData: { [x: string]: string | number };
+  rowData: StarShipFiltered;
 }
 
 const TableRow = ({ rowData }: Trow) => {

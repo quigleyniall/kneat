@@ -11,7 +11,6 @@ import {
   onSearchChange,
   setLoading
 } from './store/actions';
-import { Trow } from './components/TableRow/TableRow';
 import {
   AddRemoveFromTable,
   Page,
@@ -22,9 +21,28 @@ import {
 } from './components';
 import { starShipNummericallyColumns } from './utils/tableHelper';
 import { StoreState } from './store/rootReducer';
-import { StarShipFiltered } from './interfaces/starship';
+import { StarShipResponse, StarShipFiltered } from './interfaces/starship';
 
-class App extends React.Component<any> {
+interface IProps {
+  allStarShips: StarShipResponse[];
+  filteredStarShips: StarShipFiltered[];
+  lastSorted: string;
+  activeTableHeaders: string[];
+  allTableHeaders: string[];
+  loading: boolean;
+  distance: string;
+  makeApiCall: Function;
+  changeTableHeaders: Function;
+  calcNumResupplies: Function;
+  sortAlphabetically: Function;
+  sortNummerically: Function;
+  sortConsumables: Function;
+  reverseSort: Function;
+  onSearchChange: Function;
+  setLoading: Function;
+}
+
+class App extends React.Component<IProps> {
   search = async () => {
     const { allStarShips, activeTableHeaders, distance } = this.props;
 
@@ -93,11 +111,9 @@ class App extends React.Component<any> {
               headers={filteredStarShips[0]}
               sortResult={this.sortBy}
             >
-              {filteredStarShips.map(
-                (ship: { [x: string]: string | number }, index: number) => (
-                  <TableRow key={index} data-test="results" rowData={ship} />
-                )
-              )}
+              {filteredStarShips.map((ship, index: number) => (
+                <TableRow key={index} data-test="results" rowData={ship} />
+              ))}
             </TableWrapper>
           </>
         ) : null}
