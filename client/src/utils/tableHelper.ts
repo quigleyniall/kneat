@@ -8,6 +8,18 @@ export const filterObjectKeysInArray = (fullResponse, keysToFilter) =>
       }, {});
   });
 
+export const starShipNummericallyColumns = [
+  'MGLT',
+  'cost_in_credits',
+  'number_of_resupplies',
+  'length',
+  'max_atmosphering_speed',
+  'crew',
+  'passengers',
+  'cargo_capacity',
+  'hyperdrive_rating'
+];
+
 export const starShipFilterKeys = [
   'name',
   'model',

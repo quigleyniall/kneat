@@ -1,5 +1,16 @@
 import React from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import {
+  makeApiCall,
+  calcNumResupplies,
+  changeTableHeaders,
+  sortAlphabetically,
+  sortNummerically,
+  sortConsumables,
+  reverseSort,
+  onDistanceChange,
+  setLoading
+} from './store/actions';
 import {
   AddRemoveFromTable,
   Page,
@@ -8,147 +19,53 @@ import {
   Heading,
   SearchBar
 } from './components';
-import { checkTimeToResupply } from './utils/resupply';
-import {
-  filterObjectKeysInArray,
-  starShipFilterKeys
-} from './utils/tableHelper';
-import {
-  sortAlphabetically,
-  sortNummerically,
-  sortConsumables
-} from './utils/sorting';
+import { starShipNummericallyColumns } from './utils/tableHelper';
 
-interface State {
-  distance: string;
-  starShips: any;
-  starShipsFiltered: any;
-  lastSorted: string;
-  allResponseKeys: string[];
-  activeDataKeys: string[];
-  loading: boolean;
-}
-
-class App extends React.Component<any, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      distance: '',
-      allResponseKeys: starShipFilterKeys,
-      activeDataKeys: [
-        'name',
-        'model',
-        'consumables',
-        'MGLT',
-        'number_of_resupplies'
-      ],
-      lastSorted: '',
-      starShipsFiltered: [{}],
-      starShips: [],
-      loading: false
-    };
-  }
-
-  getData = async () => {
-    this.setState({ loading: true });
-    const req = await axios.get('/starships');
-    const res = await req.data;
-    return this.setState({ starShips: res, loading: false });
-  };
-
+class App extends React.Component<any> {
   search = async () => {
-    const { distance, starShips, activeDataKeys } = this.state;
+    const { allStarShips, activeTableHeaders, distance } = this.props;
 
-    if (starShips.length === 0) {
-      await this.getData();
+    if (allStarShips.length === 0) {
+      this.props.setLoading(true);
+      await this.props.makeApiCall();
+      this.props.setLoading(false);
     }
-    const starShipsWithResupplies = this.state.starShips.map(ship => {
-      const { consumables, MGLT } = ship;
-      if (consumables === 'unknown' || MGLT === 'unknown') {
-        ship.number_of_resupplies = 'unknown';
-        return ship;
-      }
-      const distancePerHour = +distance / MGLT;
-      const timeToResupply = checkTimeToResupply(consumables);
-
-      ship.number_of_resupplies = Math.floor(
-        distancePerHour / timeToResupply
-      ).toString();
-
-      return ship;
-    });
-
-    this.setState({
-      starShipsFiltered: sortNummerically(
-        filterObjectKeysInArray(starShipsWithResupplies, activeDataKeys),
-        'number_of_resupplies'
-      )
-    });
+    this.props.calcNumResupplies(distance, activeTableHeaders);
   };
 
   onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ distance: event.target.value });
+    this.props.onDistanceChange(event.target.value);
   };
 
   onCheckBoxChange = event => {
-    const { activeDataKeys, starShips } = this.state;
-    const filterKey = event.target.value.toString();
-    const newActiveKeys = activeDataKeys.includes(filterKey)
-      ? activeDataKeys.filter(key => key !== filterKey)
-      : activeDataKeys.concat(filterKey);
-    this.setState({
-      starShipsFiltered: filterObjectKeysInArray(starShips, newActiveKeys),
-      activeDataKeys: newActiveKeys
-    });
+    const { activeTableHeaders } = this.props;
+    const tableHeader = event.target.value.toString();
+    this.props.changeTableHeaders(activeTableHeaders, tableHeader);
   };
 
   sortBy = name => {
-    const { starShipsFiltered, lastSorted } = this.state;
+    const { filteredStarShips, lastSorted } = this.props;
 
-    const sortNummericallyColumns = [
-      'MGLT',
-      'cost_in_credits',
-      'number_of_resupplies',
-      'length',
-      'max_atmosphering_speed',
-      'crew',
-      'passengers',
-      'cargo_capacity',
-      'hyperdrive_rating'
-    ];
     if (lastSorted === name) {
-      return this.setState({
-        starShipsFiltered: starShipsFiltered.reverse(),
-        lastSorted: ''
-      });
+      return this.props.reverseSort(filteredStarShips);
     }
-    if (sortNummericallyColumns.includes(name)) {
-      return this.setState({
-        starShipsFiltered: sortNummerically(starShipsFiltered, name),
-        lastSorted: name
-      });
+    if (starShipNummericallyColumns.includes(name)) {
+      return this.props.sortNummerically(filteredStarShips, name);
     }
     if (name === 'consumables') {
-      sortConsumables(starShipsFiltered, name);
-      return this.setState({
-        lastSorted: name
-      });
+      return this.props.sortConsumables(filteredStarShips, name);
     }
-    this.setState({
-      starShipsFiltered: sortAlphabetically(starShipsFiltered, name),
-      lastSorted: name
-    });
+    return this.props.sortAlphabetically(filteredStarShips, name);
   };
 
   render() {
     const {
-      starShipsFiltered,
-      allResponseKeys,
-      activeDataKeys,
-      starShips,
-      distance,
-      loading
-    } = this.state;
+      filteredStarShips,
+      allTableHeaders,
+      activeTableHeaders,
+      loading,
+      distance
+    } = this.props;
     return (
       <Page>
         <Heading text="Enter the distance you wish to travel to calculate the number of re-supplies needed" />
@@ -159,18 +76,18 @@ class App extends React.Component<any, State> {
           searching={loading}
           searchTerm={distance}
         />
-        {starShips.length > 0 ? (
+        {filteredStarShips.length > 0 ? (
           <>
             <AddRemoveFromTable
-              tableHeaders={allResponseKeys}
-              checkBoxActive={activeDataKeys}
+              tableHeaders={allTableHeaders}
+              checkBoxActive={activeTableHeaders}
               onCheckboxChange={this.onCheckBoxChange}
             />
             <TableWrapper
-              headers={starShipsFiltered[0]}
+              headers={filteredStarShips[0]}
               sortResult={this.sortBy}
             >
-              {starShipsFiltered.map((ship, index) => (
+              {filteredStarShips.map((ship, index) => (
                 <TableRow key={index} data-test="results" rowData={ship} />
               ))}
             </TableWrapper>
@@ -182,4 +99,26 @@ class App extends React.Component<any, State> {
   }
 }
 
-export default App;
+const mapStateToProps = ({ starShip, loading }) => ({
+  allStarShips: starShip.allStarShipData,
+  filteredStarShips: starShip.filteredStarShipData,
+  lastSorted: starShip.lastSorted,
+  activeTableHeaders: starShip.activeDataKeys,
+  allTableHeaders: starShip.allResponseKeys,
+  loading,
+  distance: starShip.distance
+});
+
+const mapDispatchToProps = {
+  makeApiCall,
+  changeTableHeaders,
+  calcNumResupplies,
+  sortAlphabetically,
+  sortNummerically,
+  sortConsumables,
+  reverseSort,
+  onDistanceChange,
+  setLoading
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
