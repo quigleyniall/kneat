@@ -1,7 +1,7 @@
 export const checkTimeToResupply = (consumable: string) => {
   const timeArray = consumable.split(' ');
   const timeString = timeArray[1];
-  let hoursToResupply;
+  let hoursToResupply = 0;
 
   if (timeString.includes('hour')) {
     hoursToResupply = 1;

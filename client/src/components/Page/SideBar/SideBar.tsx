@@ -2,7 +2,7 @@ import React from 'react';
 import kneat from '../../../assets/kneat-logo.svg';
 import './SideBar.scss';
 
-const Sidemenu = ({ analysisLinks }) => {
+const Sidemenu = ({ analysisLinks }: { analysisLinks: string[] }) => {
   return (
     <div className="sidebar">
       <div className="top">

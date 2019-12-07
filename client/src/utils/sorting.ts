@@ -1,6 +1,6 @@
 import { checkTimeToResupply } from './resupply';
 
-export const sortAlphabetically = (array, objectKey) =>
+export const sortAlphabetically = (array: any[], objectKey: string) =>
   array.sort((a, b) => {
     if (a[objectKey].toLowerCase() < b[objectKey].toLowerCase()) {
       return -1;
@@ -11,7 +11,7 @@ export const sortAlphabetically = (array, objectKey) =>
     return 0;
   });
 
-export const sortNummerically = (array, objectKey) =>
+export const sortNummerically = (array: any[], objectKey: string) =>
   array.sort((a, b) => {
     if (b[objectKey] === 'unknown' || b[objectKey] === 'n/a') {
       return -1;
@@ -20,7 +20,7 @@ export const sortNummerically = (array, objectKey) =>
     return a[objectKey] - b[objectKey];
   });
 
-export const sortConsumables = (array, objectKey) => {
+export const sortConsumables = (array: any[], objectKey: string) => {
   array.sort((a, b) => {
     if (b[objectKey] === 'unknown') {
       return -1;

@@ -5,7 +5,7 @@ export const filterObjectKeysInArray = (
   fullResponse.map(response => {
     return Object.keys(response)
       .filter(key => keysToFilter.includes(key))
-      .reduce((obj, key) => {
+      .reduce((obj: { [x: string]: string | number }, key: string) => {
         obj[key] = response[key];
         return obj;
       }, {});

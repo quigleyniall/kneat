@@ -4,7 +4,7 @@ import CheckBox from '../Checkbox/Checkbox';
 import './AddRemoveFromTable.scss';
 
 interface Props {
-  onCheckboxChange: (e) => void;
+  onCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   tableHeaders: string[];
   checkBoxActive: string[];
 }
@@ -19,7 +19,7 @@ const AddRemoveFromTable = ({
       btnClass="btn"
       btnText="Add/Remove Data From Table"
       renderData={tableHeaders}
-      render={({ renderData }) => {
+      render={({ renderData }: { renderData: string[] }) => {
         return renderData.map(key => (
           <CheckBox
             name="columns"

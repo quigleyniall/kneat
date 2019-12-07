@@ -4,7 +4,7 @@ import TextInput from '../TextInput';
 import './SearchBar.scss';
 
 interface SearchBarProps {
-  onSearchChange: (e) => void;
+  onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPress: () => void;
   searching: boolean;
   searchTerm: string;

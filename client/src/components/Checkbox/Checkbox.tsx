@@ -1,8 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { format } from '../../utils/formatText';
 import './Checkbox.scss';
 
-const CheckBox = ({ check, name, onCheckboxChange, checked }) => (
+interface IProps {
+  check: string;
+  name: string;
+  onCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  checked: boolean;
+}
+
+const CheckBox = ({ check, name, onCheckboxChange, checked }: IProps) => (
   <label className="checkboxGroup">
     {format(check)}
     <input
@@ -15,5 +23,12 @@ const CheckBox = ({ check, name, onCheckboxChange, checked }) => (
     <span className="checkmark"></span>
   </label>
 );
+
+CheckBox.propTypes = {
+  check: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  onCheckboxChange: PropTypes.func.isRequired,
+  checked: PropTypes.bool.isRequired
+};
 
 export default CheckBox;

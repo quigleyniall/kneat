@@ -11,6 +11,7 @@ import {
   onSearchChange,
   setLoading
 } from './store/actions';
+import { Trow } from './components/TableRow/TableRow';
 import {
   AddRemoveFromTable,
   Page,
@@ -21,7 +22,7 @@ import {
 } from './components';
 import { starShipNummericallyColumns } from './utils/tableHelper';
 import { StoreState } from './store/rootReducer';
-import { StarShipResponse } from './interfaces/starship';
+import { StarShipFiltered } from './interfaces/starship';
 
 class App extends React.Component<any> {
   search = async () => {
@@ -93,7 +94,7 @@ class App extends React.Component<any> {
               sortResult={this.sortBy}
             >
               {filteredStarShips.map(
-                (ship: StarShipResponse, index: number) => (
+                (ship: { [x: string]: string | number }, index: number) => (
                   <TableRow key={index} data-test="results" rowData={ship} />
                 )
               )}

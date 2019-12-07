@@ -3,7 +3,13 @@ import SideBar from './SideBar';
 import Nav from './Nav';
 import './Page.scss';
 
-const Page = ({ children, navHeader, analysisLinks }) => (
+interface IProps {
+  navHeader?: string;
+  analysisLinks: string[];
+  children: React.ReactNode;
+}
+
+const Page = ({ children, navHeader, analysisLinks }: IProps) => (
   <div className="page-wrapper">
     <Nav navHeader={navHeader} />
     <div className="page">

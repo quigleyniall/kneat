@@ -1,6 +1,10 @@
 import React from 'react';
 
-const TableRow = ({ rowData }) => {
+export interface Trow {
+  rowData: { [x: string]: string | number };
+}
+
+const TableRow = ({ rowData }: Trow) => {
   const tableData = Object.values(rowData).map(data => <td>{data}</td>);
 
   return <tr>{tableData}</tr>;

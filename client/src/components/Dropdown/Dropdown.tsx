@@ -14,7 +14,7 @@ interface IState {
 }
 
 class DropDown extends React.Component<IProps, IState> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       activeDropDown: false

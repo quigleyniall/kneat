@@ -1,3 +1,3 @@
-export const format = text => {
+export const format = (text: string) => {
   return (text.charAt(0).toUpperCase() + text.slice(1)).replace(/_/g, ' ');
 };
