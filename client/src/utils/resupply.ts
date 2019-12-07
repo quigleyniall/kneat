@@ -1,4 +1,4 @@
-export const checkTimeToResupply = consumable => {
+export const checkTimeToResupply = (consumable: string) => {
   const timeArray = consumable.split(' ');
   const timeString = timeArray[1];
   let hoursToResupply;

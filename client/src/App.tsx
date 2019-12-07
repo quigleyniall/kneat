@@ -8,7 +8,7 @@ import {
   sortNummerically,
   sortConsumables,
   reverseSort,
-  onDistanceChange,
+  onSearchChange,
   setLoading
 } from './store/actions';
 import {
@@ -20,6 +20,8 @@ import {
   SearchBar
 } from './components';
 import { starShipNummericallyColumns } from './utils/tableHelper';
+import { StoreState } from './store/rootReducer';
+import { StarShipResponse } from './interfaces/starship';
 
 class App extends React.Component<any> {
   search = async () => {
@@ -34,16 +36,16 @@ class App extends React.Component<any> {
   };
 
   onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onDistanceChange(event.target.value);
+    this.props.onSearchChange(event.target.value);
   };
 
-  onCheckBoxChange = event => {
+  onCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { activeTableHeaders } = this.props;
     const tableHeader = event.target.value.toString();
     this.props.changeTableHeaders(activeTableHeaders, tableHeader);
   };
 
-  sortBy = name => {
+  sortBy = (name: string) => {
     const { filteredStarShips, lastSorted } = this.props;
 
     if (lastSorted === name) {
@@ -67,7 +69,10 @@ class App extends React.Component<any> {
       distance
     } = this.props;
     return (
-      <Page>
+      <Page
+        navHeader="Find the perfect Star Ship for your Journey"
+        analysisLinks={['Star Ships']}
+      >
         <Heading text="Enter the distance you wish to travel to calculate the number of re-supplies needed" />
         <SearchBar
           data-test="search-bar"
@@ -87,9 +92,11 @@ class App extends React.Component<any> {
               headers={filteredStarShips[0]}
               sortResult={this.sortBy}
             >
-              {filteredStarShips.map((ship, index) => (
-                <TableRow key={index} data-test="results" rowData={ship} />
-              ))}
+              {filteredStarShips.map(
+                (ship: StarShipResponse, index: number) => (
+                  <TableRow key={index} data-test="results" rowData={ship} />
+                )
+              )}
             </TableWrapper>
           </>
         ) : null}
@@ -99,7 +106,7 @@ class App extends React.Component<any> {
   }
 }
 
-const mapStateToProps = ({ starShip, loading }) => ({
+const mapStateToProps = ({ starShip, loading }: StoreState) => ({
   allStarShips: starShip.allStarShipData,
   filteredStarShips: starShip.filteredStarShipData,
   lastSorted: starShip.lastSorted,
@@ -117,7 +124,7 @@ const mapDispatchToProps = {
   sortNummerically,
   sortConsumables,
   reverseSort,
-  onDistanceChange,
+  onSearchChange,
   setLoading
 };
 

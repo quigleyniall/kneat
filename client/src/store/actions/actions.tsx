@@ -1,19 +1,17 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { ActionTypes } from './types';
+import {
+  MakeApiCall,
+  SearchChange,
+  ChangeTableHeaders,
+  SortArray,
+  NumResupplies,
+  Loading
+} from './interfaces';
 import { checkTimeToResupply } from '../../utils/resupply';
 
-export interface MakeApiCall {
-  type: ActionTypes.makeApiCall;
-  payload: any;
-}
-
-export interface FilterData {
-  type: ActionTypes.changeTableHeaders;
-  payload: any;
-}
-
-export const setLoading = value => ({
+export const setLoading = (value: boolean): Loading => ({
   type: ActionTypes.loading,
   payload: value
 });
@@ -22,18 +20,21 @@ export const makeApiCall = () => async (dispatch: Dispatch) => {
   const req = await axios.get('/starships');
   const res = await req.data;
 
-  dispatch({
+  dispatch<MakeApiCall>({
     type: ActionTypes.makeApiCall,
     payload: res
   });
 };
 
-export const onDistanceChange = distance => ({
-  type: ActionTypes.distanceChange,
-  payload: distance
+export const onSearchChange = (searchTerm: string): SearchChange => ({
+  type: ActionTypes.searchChange,
+  payload: searchTerm
 });
 
-export const changeTableHeaders = (activeTableHeaders, tableHeader) => {
+export const changeTableHeaders = (
+  activeTableHeaders: string[],
+  tableHeader: string
+): ChangeTableHeaders => {
   const newActiveKeys = activeTableHeaders.includes(tableHeader)
     ? activeTableHeaders.filter(key => key !== tableHeader)
     : activeTableHeaders.concat(tableHeader);
@@ -44,13 +45,19 @@ export const changeTableHeaders = (activeTableHeaders, tableHeader) => {
   };
 };
 
-export const calcNumResupplies = (distance, activeDataKeys) => ({
+export const calcNumResupplies = (
+  distance: string,
+  activeDataKeys: string[]
+): NumResupplies => ({
   type: ActionTypes.calcResupplies,
   distance,
   activeDataKeys
 });
 
-export const sortAlphabetically = (array, objectKey) => {
+export const sortAlphabetically = (
+  array: any[],
+  objectKey: string
+): SortArray => {
   const sortedArray = array.sort((a, b) => {
     if (a[objectKey].toLowerCase() < b[objectKey].toLowerCase()) {
       return -1;
@@ -68,7 +75,10 @@ export const sortAlphabetically = (array, objectKey) => {
   };
 };
 
-export const sortNummerically = (array, objectKey) => {
+export const sortNummerically = (
+  array: any[],
+  objectKey: string
+): SortArray => {
   const sortedArray = array.sort((a, b) => {
     if (b[objectKey] === 'unknown' || b[objectKey] === 'n/a') {
       return -1;
@@ -84,7 +94,7 @@ export const sortNummerically = (array, objectKey) => {
   };
 };
 
-export const sortConsumables = (array, objectKey) => {
+export const sortConsumables = (array: any[], objectKey: string): SortArray => {
   array.sort((a, b) => {
     if (b[objectKey] === 'unknown') {
       return -1;
@@ -105,7 +115,7 @@ export const sortConsumables = (array, objectKey) => {
   };
 };
 
-export const reverseSort = array => ({
+export const reverseSort = (array: any[]): SortArray => ({
   type: ActionTypes.sortData,
   sortedArray: array.reverse(),
   lastSorted: ''

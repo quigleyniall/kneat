@@ -5,6 +5,17 @@ import {
 } from '../../utils/tableHelper';
 import { checkTimeToResupply } from '../../utils/resupply';
 import { sortNummerically } from '../../utils/sorting';
+import { StarShipResponse, StarShipFiltered } from '../../interfaces/starship';
+
+export interface StarShipState {
+  allStarShipData: StarShipResponse[];
+  filteredStarShipData: StarShipFiltered[];
+  lastSorted: string;
+  activeDataKeys: string[];
+  allResponseKeys: string[];
+  distance: string;
+  loading: boolean;
+}
 
 const initialState = {
   allStarShipData: [],
@@ -22,12 +33,15 @@ const initialState = {
   loading: false
 };
 
-const starShipReducer = (state = initialState, action) => {
+const starShipReducer = (
+  state: StarShipState = initialState,
+  action: Action
+) => {
   switch (action.type) {
     case ActionTypes.makeApiCall:
       return { ...state, allStarShipData: action.payload };
 
-    case ActionTypes.distanceChange:
+    case ActionTypes.searchChange:
       return { ...state, distance: action.payload };
 
     case ActionTypes.changeTableHeaders:
@@ -51,7 +65,7 @@ const starShipReducer = (state = initialState, action) => {
           ship.number_of_resupplies = 'unknown';
           return ship;
         }
-        const distancePerHour = +action.distance / MGLT;
+        const distancePerHour = +action.distance / +MGLT;
         const timeToResupply = checkTimeToResupply(consumables);
 
         ship.number_of_resupplies = Math.floor(

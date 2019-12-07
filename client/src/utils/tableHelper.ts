@@ -1,4 +1,7 @@
-export const filterObjectKeysInArray = (fullResponse, keysToFilter) =>
+export const filterObjectKeysInArray = (
+  fullResponse: any[],
+  keysToFilter: string
+) =>
   fullResponse.map(response => {
     return Object.keys(response)
       .filter(key => keysToFilter.includes(key))
