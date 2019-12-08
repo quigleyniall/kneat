@@ -62,12 +62,14 @@ const starShipReducer = (
       const starShipsWithResupplies = state.allStarShipData.map(ship => {
         const { consumables, MGLT } = ship;
         if (consumables === 'unknown' || MGLT === 'unknown') {
+          // eslint-disable-next-line @typescript-eslint/camelcase
           ship.number_of_resupplies = 'unknown';
           return ship;
         }
         const distancePerHour = +action.distance / +MGLT;
         const timeToResupply = checkTimeToResupply(consumables);
 
+        // eslint-disable-next-line @typescript-eslint/camelcase
         ship.number_of_resupplies = Math.floor(
           distancePerHour / timeToResupply
         ).toString();
