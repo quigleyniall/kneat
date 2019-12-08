@@ -18,30 +18,28 @@ const setup = (props = {}) => {
 };
 
 describe('button test', () => {
-  let wrapper;
-  let buttonElement: any;
+  let wrapper: any;
 
   beforeEach(() => {
     wrapper = setup();
-    buttonElement = findByTestAttr(wrapper, 'button');
   });
 
   test('renders without error', () => {
-    expect(buttonElement.length).toBe(1);
+    expect(wrapper.length).toBe(1);
   });
 
   test('runs onPress function', () => {
-    buttonElement.simulate('click');
+    wrapper.simulate('click');
     const onPressMockFnCallCount = onPressMockFn.mock.calls.length;
     expect(onPressMockFnCallCount).toBe(1);
   });
 
   test('renders text', () => {
-    expect(buttonElement.text()).toBe(defaultProps.text);
+    expect(wrapper.text()).toBe(defaultProps.text);
   });
 
   test('loads appropiate class', () => {
-    expect(buttonElement.hasClass('btn-search')).toBe(true);
+    expect(wrapper.hasClass('btn-search')).toBe(true);
   });
 
   test('check props sent to button', () => {
