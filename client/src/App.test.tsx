@@ -4,24 +4,9 @@ import App from './App';
 import { findByTestAttr } from './utils/test';
 
 describe('Home Page', () => {
-  let wrapper;
+  let wrapper: React.ReactNode;
 
   beforeEach(() => {
     wrapper = shallow(<App />);
-  });
-
-  test('renders without crashing', () => {
-    const app = findByTestAttr(wrapper, 'app');
-    expect(app.length).toBe(1);
-  });
-
-  test('renders the searchbar', () => {
-    const searchBar = findByTestAttr(wrapper, 'search-bar');
-    expect(searchBar.length).toBe(1);
-  });
-
-  test('renders the results', () => {
-    const results = findByTestAttr(wrapper, 'results');
-    expect(results.length).toBe(1);
   });
 });
