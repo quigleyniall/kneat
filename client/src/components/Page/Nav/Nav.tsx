@@ -7,7 +7,7 @@ import './Nav.scss';
 const Nav = ({ navHeader }: { navHeader: string }) => (
   <nav>
     <img src={kneat} alt="logo" className="logo" />
-    <Heading text={navHeader} />
+    <Heading data-test="heading" text={navHeader} />
   </nav>
 );
 
