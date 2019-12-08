@@ -6,7 +6,7 @@ const Sidemenu = ({ analysisLinks }: { analysisLinks: string[] }) => (
   <div className="sidebar">
     <div className="top">
       <div className="sidebar-header">Analysis</div>
-      <ul className="menu">
+      <ul className="menu" data-test="analysis-container">
         {analysisLinks.map((link, i) => {
           return (
             <li key={i} className="link">
