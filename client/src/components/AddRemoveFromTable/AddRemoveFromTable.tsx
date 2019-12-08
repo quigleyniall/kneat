@@ -15,22 +15,17 @@ const AddRemoveFromTable = ({
   tableHeaders
 }: Props) => (
   <div className="searchoptions">
-    <DropDown
-      btnClass="btn"
-      btnText="Add/Remove Data From Table"
-      renderData={tableHeaders}
-      render={({ renderData }: { renderData: string[] }) => {
-        return renderData.map((key, index) => (
-          <CheckBox
-            key={index}
-            name="columns"
-            onCheckboxChange={onCheckboxChange}
-            check={key}
-            checked={checkBoxActive.includes(key)}
-          />
-        ));
-      }}
-    />
+    <DropDown btnClass="btn" btnText="Add/Remove Data From Table">
+      {tableHeaders.map((header, index) => (
+        <CheckBox
+          key={index}
+          name="columns"
+          onCheckboxChange={onCheckboxChange}
+          text={header}
+          checked={checkBoxActive.includes(header)}
+        />
+      ))}
+    </DropDown>
   </div>
 );
 

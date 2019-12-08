@@ -5,8 +5,7 @@ import './Dropdown.scss';
 interface IProps {
   btnText: string;
   btnClass: string;
-  render: Function;
-  renderData: string[];
+  children: React.ReactNode;
 }
 
 interface IState {
@@ -31,7 +30,7 @@ class DropDown extends React.Component<IProps, IState> {
 
   render() {
     const { activeDropDown } = this.state;
-    const { btnClass, renderData, btnText } = this.props;
+    const { btnClass, btnText, children } = this.props;
     return (
       <div
         data-test="dropdown-wrapper"
@@ -39,15 +38,18 @@ class DropDown extends React.Component<IProps, IState> {
         onMouseEnter={this.openDropDown}
         onMouseLeave={this.closeDropDown}
       >
-        <Button text={btnText} onPress={() => {}} btnClass={btnClass} />
+        <Button
+          data-test="dropdown-button"
+          text={btnText}
+          onPress={this.openDropDown}
+          btnClass={btnClass}
+        />
         <div
-          data-test="dropdown"
+          data-test="dropdown-info"
           className={activeDropDown ? 'dropdown show' : 'dropdown hide'}
           style={{ width: '300px' }}
         >
-          {this.props.render({
-            renderData
-          })}
+          {children}
         </div>
       </div>
     );
