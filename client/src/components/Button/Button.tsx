@@ -12,6 +12,7 @@ interface IProps {
 
 const Button = ({ text, onPress, btnClass, disabled, type }: IProps) => (
   <button
+    data-test="button"
     type={type}
     onClick={onPress}
     className={`btn btn-${btnClass}`}
