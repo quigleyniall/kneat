@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SideBar from './SideBar';
 import Nav from './Nav';
 import './Page.scss';
@@ -11,12 +12,20 @@ interface IProps {
 
 const Page = ({ children, navHeader, analysisLinks }: IProps) => (
   <div className="page-wrapper">
-    <Nav navHeader={navHeader} />
+    <Nav data-test="nav" navHeader={navHeader} />
     <div className="page">
-      <SideBar analysisLinks={analysisLinks} />
-      <div className="main">{children}</div>
+      <SideBar data-test="side-bar" analysisLinks={analysisLinks} />
+      <div className="main" data-test="page-children">
+        {children}
+      </div>
     </div>
   </div>
 );
+
+Page.propTypes = {
+  navHeader: PropTypes.string,
+  analysisLinks: PropTypes.arrayOf(PropTypes.string),
+  children: PropTypes.node.isRequired
+};
 
 export default Page;
