@@ -1,4 +1,5 @@
 import { ActionTypes } from './types';
+import { StarShipResponse, StarShipFiltered } from '../../interfaces/starship';
 
 export interface Loading {
   type: ActionTypes.loading;
@@ -7,12 +8,12 @@ export interface Loading {
 
 export interface MakeApiCall {
   type: ActionTypes.makeApiCall;
-  payload: any;
+  payload: StarShipResponse[];
 }
 
 export interface ChangeTableHeaders {
   type: ActionTypes.changeTableHeaders;
-  payload: any;
+  payload: string[];
 }
 
 export interface SearchChange {
@@ -23,11 +24,11 @@ export interface SearchChange {
 export interface NumResupplies {
   type: ActionTypes.calcResupplies;
   distance: string;
-  activeDataKeys: any;
+  activeDataKeys: string[];
 }
 
 export interface SortArray {
   type: ActionTypes.sortData;
-  sortedArray: any;
+  sortedArray: StarShipFiltered[];
   lastSorted: string;
 }
