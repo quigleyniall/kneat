@@ -13,15 +13,13 @@ const setup = () => shallow(<DropDown {...defaultProps} />);
 
 describe('test dropdown', () => {
   let wrapper: any;
-  let dropDownWrapper: any;
 
   beforeEach(() => {
     wrapper = setup();
-    dropDownWrapper = findByTestAttr(wrapper, 'dropdown-wrapper');
   });
 
   test('renders without error', () => {
-    expect(dropDownWrapper.length).toBe(1);
+    expect(wrapper.length).toBe(1);
   });
 
   test('renders button', () => {
