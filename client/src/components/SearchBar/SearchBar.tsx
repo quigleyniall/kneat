@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../Button/Button';
 import TextInput from '../TextInput';
 import './SearchBar.scss';
+import PropTypes from 'prop-types';
 
 interface SearchBarProps {
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -28,6 +29,13 @@ const SearchBar = ({
       />
     </div>
   );
+};
+
+SearchBar.propTypes = {
+  onSearchChange: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
+  searching: PropTypes.bool.isRequired,
+  searchTerm: PropTypes.string.isRequired
 };
 
 export default SearchBar;
