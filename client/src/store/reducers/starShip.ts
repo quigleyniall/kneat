@@ -12,7 +12,7 @@ export interface StarShipState {
   loading: boolean;
 }
 
-const initialState = {
+export const initialState = {
   allStarShipData: [],
   filteredStarShipData: [],
   lastSorted: '',
