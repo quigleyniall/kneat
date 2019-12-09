@@ -51,7 +51,12 @@ class App extends React.Component<IProps> {
       await this.props.makeApiCall();
       this.props.setLoading(false);
     }
-    this.props.calcNumResupplies(distance, activeTableHeaders);
+
+    this.props.calcNumResupplies(
+      this.props.allStarShips,
+      distance,
+      activeTableHeaders
+    );
   };
 
   onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,9 +64,13 @@ class App extends React.Component<IProps> {
   };
 
   onCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { activeTableHeaders } = this.props;
+    const { activeTableHeaders, allStarShips } = this.props;
     const tableHeader = event.target.value.toString();
-    this.props.changeTableHeaders(activeTableHeaders, tableHeader);
+    this.props.changeTableHeaders(
+      allStarShips,
+      activeTableHeaders,
+      tableHeader
+    );
   };
 
   sortBy = (name: string) => {
