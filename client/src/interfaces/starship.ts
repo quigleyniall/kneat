@@ -12,7 +12,6 @@ export interface StarShipResponse {
   hyperdrive_rating: string;
   MGLT: number | string;
   starship_class: string;
-  number_of_resupplies: string;
 }
 
 export interface StarShipFiltered {
