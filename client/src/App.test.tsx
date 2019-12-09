@@ -8,7 +8,7 @@ import { sampleResponse } from './utils/sampleResponse';
 describe('redux properties', () => {
   const setup = (state = {}) => {
     const store = storeFactory(state);
-    const wrapper = shallow(<App store={store} />)
+    const wrapper: any = shallow(<App store={store} />)
       .dive()
       .dive();
     return wrapper;
