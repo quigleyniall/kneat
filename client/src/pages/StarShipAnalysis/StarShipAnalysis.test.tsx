@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import App, { UnconnectedStarShipAnalysis } from './StarShipAnalysis';
 import { storeFactory, findByTestAttr } from '../../utils/test';
-import { initialState } from '../../store/reducers/starShip';
+import { initialState } from '../../store/reducers/starShipAnalysis';
 import { sampleResponse } from '../../utils/sampleResponse';
 
 describe('redux properties', () => {

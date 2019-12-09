@@ -1,5 +1,5 @@
 import { ActionTypes } from '../actions';
-import starShipReducer, { initialState } from './starShip';
+import starShipReducer, { initialState } from './starShipAnalysis';
 import { sampleResponse } from '../../utils/sampleResponse';
 
 test('stores response from api call', () => {
