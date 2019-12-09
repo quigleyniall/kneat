@@ -20,8 +20,14 @@ const SearchBar = ({
   const btnClass = searching || searchTerm.length === 0 ? 'disabled' : 'search';
   return (
     <div className="flex">
-      <TextInput name="searchBar" type="text" handleChange={onSearchChange} />
+      <TextInput
+        data-test="text-input"
+        name="searchBar"
+        type="text"
+        handleChange={onSearchChange}
+      />
       <Button
+        data-test="search-button"
         text="Calculate Number of Re-Supplies"
         onPress={onPress}
         btnClass={btnClass}
