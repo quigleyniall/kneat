@@ -9,13 +9,15 @@ interface SearchBarProps {
   onPress: () => void;
   searching: boolean;
   searchTerm: string;
+  searchBtnText: string;
 }
 
 const SearchBar = ({
   onSearchChange,
   onPress,
   searching,
-  searchTerm
+  searchTerm,
+  searchBtnText
 }: SearchBarProps) => {
   const btnClass = searching || searchTerm.length === 0 ? 'disabled' : 'search';
   return (
@@ -28,7 +30,7 @@ const SearchBar = ({
       />
       <Button
         data-test="search-button"
-        text="Calculate Number of Re-Supplies"
+        text={searchBtnText}
         onPress={onPress}
         btnClass={btnClass}
         disabled={searching || searchTerm.length === 0}

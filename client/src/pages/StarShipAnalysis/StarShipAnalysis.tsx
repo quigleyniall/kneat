@@ -109,6 +109,7 @@ export class UnconnectedStarShipAnalysis extends React.Component<IProps> {
           onSearchChange={this.onSearchChange}
           searching={loading}
           searchTerm={distance}
+          searchBtnText="Calculate Number of Re-Supplies"
         />
         {filteredStarShips.length > 0 ? (
           <>

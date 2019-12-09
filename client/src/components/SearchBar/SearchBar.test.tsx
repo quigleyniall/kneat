@@ -7,7 +7,8 @@ const props = {
   onSearchChange: jest.fn(),
   onPress: jest.fn(),
   searching: true,
-  searchTerm: ''
+  searchTerm: '',
+  searchBtnText: 'click me'
 };
 
 const wrapper = shallow(<SearchBar {...props} />);
