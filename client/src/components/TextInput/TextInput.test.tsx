@@ -27,6 +27,9 @@ test('renders without error', () => {
 });
 
 test('handlChange function fired onChange', () => {
-  wrapper.simulate('change', { target: { value: 'hello' } });
+  const changeEvent = { target: { value: 'hello' } };
+  wrapper.simulate('change', changeEvent);
+
   expect(onChangeMock.mock.calls.length).toBe(1);
+  expect(onChangeMock).toBeCalledWith(changeEvent);
 });
