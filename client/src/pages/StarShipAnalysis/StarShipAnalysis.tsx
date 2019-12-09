@@ -101,7 +101,6 @@ export class UnconnectedStarShipAnalysis extends React.Component<IProps> {
       <Page
         data-test="page"
         navHeader="Find the perfect Star Ship for your Journey"
-        analysisLinks={['Star Ships']}
       >
         <Heading text="Enter the distance you wish to travel to calculate the number of re-supplies needed" />
         <SearchBar

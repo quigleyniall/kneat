@@ -6,15 +6,14 @@ import './Page.scss';
 
 interface IProps {
   navHeader?: string;
-  analysisLinks: string[];
   children: React.ReactNode;
 }
 
-const Page = ({ children, navHeader, analysisLinks }: IProps) => (
+const Page = ({ children, navHeader }: IProps) => (
   <div className="page-wrapper">
     <Nav data-test="nav" navHeader={navHeader} />
     <div className="page">
-      <SideBar data-test="side-bar" analysisLinks={analysisLinks} />
+      <SideBar data-test="side-bar" />
       <div className="main" data-test="page-children">
         {children}
       </div>
