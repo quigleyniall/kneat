@@ -4,8 +4,6 @@ import App, { UnconnectedApp } from './App';
 import { storeFactory, findByTestAttr } from './utils/test';
 import { initialState } from './store/reducers/starShip';
 import { sampleResponse } from './utils/sampleResponse';
-import { calcNumResupplies } from './store/actions';
-import { sortAlphabetically } from './utils/sorting';
 
 describe('redux properties', () => {
   const setup = (state = {}) => {
