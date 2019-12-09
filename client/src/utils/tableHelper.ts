@@ -1,11 +1,11 @@
 export const filterObjectKeysInArray = (
   fullResponse: any[],
-  keysToFilter: string
+  keysToFilter: string[]
 ) =>
   fullResponse.map(response => {
     return Object.keys(response)
       .filter(key => keysToFilter.includes(key))
-      .reduce((obj: { [x: string]: string | number }, key: string) => {
+      .reduce((obj: any, key: string) => {
         obj[key] = response[key];
         return obj;
       }, {});
