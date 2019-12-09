@@ -5,7 +5,6 @@ import axios from 'axios';
 import store from './store';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import './index.scss';
 import './styles/index.scss';
 
 axios.defaults.baseURL = 'http://localhost:8080';
