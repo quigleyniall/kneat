@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import App, { UnconnectedApp } from './App';
-import { storeFactory, findByTestAttr } from './utils/test';
-import { initialState } from './store/reducers/starShip';
-import { sampleResponse } from './utils/sampleResponse';
+import App, { UnconnectedStarShipAnalysis } from './StarShipAnalysis';
+import { storeFactory, findByTestAttr } from '../../utils/test';
+import { initialState } from '../../store/reducers/starShip';
+import { sampleResponse } from '../../utils/sampleResponse';
 
 describe('redux properties', () => {
   const setup = (state = {}) => {
@@ -83,19 +83,19 @@ describe('unconnected app', () => {
   };
 
   test('renders the page', () => {
-    const wrapper = shallow(<UnconnectedApp {...props} />);
+    const wrapper = shallow(<UnconnectedStarShipAnalysis {...props} />);
     const page = findByTestAttr(wrapper, 'page');
     expect(page.length).toBe(1);
   });
 
   test('renders correct amount of rows', () => {
-    const wrapper = shallow(<UnconnectedApp {...props} />);
+    const wrapper = shallow(<UnconnectedStarShipAnalysis {...props} />);
     const tableRows = findByTestAttr(wrapper, 'table-results');
     expect(tableRows.length).toBe(3);
   });
 
   test('on search change is called with correct value', () => {
-    const wrapper = shallow(<UnconnectedApp {...props} />);
+    const wrapper = shallow(<UnconnectedStarShipAnalysis {...props} />);
 
     const searchBar = findByTestAttr(wrapper, 'search-bar').dive();
     const textInput = findByTestAttr(searchBar, 'text-input').dive();
@@ -107,7 +107,7 @@ describe('unconnected app', () => {
   });
 
   test('runs calcNumResupplies when search button is clicked', () => {
-    const wrapper = shallow(<UnconnectedApp {...props} />);
+    const wrapper = shallow(<UnconnectedStarShipAnalysis {...props} />);
 
     const searchBar = findByTestAttr(wrapper, 'search-bar').dive();
     const searchBarButton = findByTestAttr(searchBar, 'search-button').dive();
@@ -123,7 +123,7 @@ describe('unconnected app', () => {
   });
 
   test('on checkbox change is called with correct value', () => {
-    const wrapper = shallow(<UnconnectedApp {...props} />);
+    const wrapper = shallow(<UnconnectedStarShipAnalysis {...props} />);
     const addRemoveFromTable = findByTestAttr(
       wrapper,
       'add-remove-from-table'
@@ -146,7 +146,7 @@ describe('unconnected app', () => {
   });
 
   test('sort by is run with correct header', () => {
-    const wrapper = shallow(<UnconnectedApp {...props} />);
+    const wrapper = shallow(<UnconnectedStarShipAnalysis {...props} />);
     const tableWrapper = findByTestAttr(wrapper, 'table-wrapper').dive();
     const firstHeader = tableWrapper.find('th').first();
     firstHeader.simulate('click');
@@ -160,14 +160,14 @@ describe('unconnected app', () => {
 
   test('loading text appears when loading prop is true', () => {
     const setUpProps = { ...props, loading: true };
-    const wrapper = shallow(<UnconnectedApp {...setUpProps} />);
+    const wrapper = shallow(<UnconnectedStarShipAnalysis {...setUpProps} />);
 
     const loadingText = findByTestAttr(wrapper, 'loading-text');
     expect(loadingText.length).toBe(1);
   });
 
   test('loading text doesnt appear when loading prop is false', () => {
-    const wrapper = shallow(<UnconnectedApp {...props} />);
+    const wrapper = shallow(<UnconnectedStarShipAnalysis {...props} />);
 
     const loadingText = findByTestAttr(wrapper, 'loading-text');
     expect(loadingText.length).toBe(0);

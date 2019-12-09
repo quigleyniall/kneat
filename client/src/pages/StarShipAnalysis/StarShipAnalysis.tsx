@@ -10,7 +10,7 @@ import {
   reverseSort,
   onSearchChange,
   setLoading
-} from './store/actions';
+} from '../../store/actions';
 import {
   AddRemoveFromTable,
   Page,
@@ -18,10 +18,10 @@ import {
   TableRow,
   Heading,
   SearchBar
-} from './components';
-import { starShipNummericallyColumns } from './utils/tableHelper';
-import { StoreState } from './store/rootReducer';
-import { StarShipResponse, StarShipFiltered } from './interfaces/starship';
+} from '../../components';
+import { starShipNummericallyColumns } from '../../utils/tableHelper';
+import { StoreState } from '../../store/rootReducer';
+import { StarShipResponse, StarShipFiltered } from '../../interfaces/starship';
 
 interface IProps {
   store?: any;
@@ -43,7 +43,7 @@ interface IProps {
   setLoading: Function;
 }
 
-export class UnconnectedApp extends React.Component<IProps> {
+export class UnconnectedStarShipAnalysis extends React.Component<IProps> {
   search = async () => {
     const { allStarShips, activeTableHeaders, distance } = this.props;
 
@@ -166,4 +166,7 @@ const mapDispatchToProps = {
   setLoading
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UnconnectedApp);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UnconnectedStarShipAnalysis);
