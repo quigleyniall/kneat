@@ -144,14 +144,14 @@ export class UnconnectedStarShipAnalysis extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = ({ starShip, loading }: StoreState) => ({
-  allStarShips: starShip.allStarShipData,
-  filteredStarShips: starShip.filteredStarShipData,
-  lastSorted: starShip.lastSorted,
-  activeTableHeaders: starShip.activeDataKeys,
-  allTableHeaders: starShip.allResponseKeys,
+const mapStateToProps = ({ starShipAnalysis, loading }: StoreState) => ({
+  allStarShips: starShipAnalysis.allStarShipData,
+  filteredStarShips: starShipAnalysis.filteredStarShipData,
+  lastSorted: starShipAnalysis.lastSorted,
+  activeTableHeaders: starShipAnalysis.activeDataKeys,
+  allTableHeaders: starShipAnalysis.allResponseKeys,
   loading,
-  distance: starShip.distance
+  distance: starShipAnalysis.distance
 });
 
 const mapDispatchToProps = {

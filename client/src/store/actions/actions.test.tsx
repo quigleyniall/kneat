@@ -53,7 +53,9 @@ describe('test actions with empty store', () => {
 
       return store.dispatch(makeApiCall()).then(() => {
         const newState = store.getState();
-        expect(newState.starShip.allStarShipData).toEqual(sampleResponse);
+        expect(newState.starShipAnalysis.allStarShipData).toEqual(
+          sampleResponse
+        );
       });
     });
   });
@@ -61,7 +63,7 @@ describe('test actions with empty store', () => {
   test('sets correct search term', () => {
     store.dispatch(onSearchChange('10000'));
     const newState = store.getState();
-    expect(newState.starShip.distance).toBe('10000');
+    expect(newState.starShipAnalysis.distance).toBe('10000');
   });
 });
 
@@ -69,7 +71,7 @@ describe('test actions with sample store', () => {
   let store: any;
   beforeEach(() => {
     store = storeFactory({
-      starShip: { allStarShipData: sampleResponse }
+      starShipAnalysis: { allStarShipData: sampleResponse }
     });
   });
 
@@ -81,10 +83,10 @@ describe('test actions with sample store', () => {
         changeTableHeaders(sampleResponse, activeTableHeaders, 'manufacturer')
       );
       const newState = store.getState();
-      expect(newState.starShip.activeDataKeys.length).toBe(4);
+      expect(newState.starShipAnalysis.activeDataKeys.length).toBe(4);
 
       const filteredStarShipKeysLength = Object.keys(
-        newState.starShip.filteredStarShipData[0]
+        newState.starShipAnalysis.filteredStarShipData[0]
       ).length;
       expect(filteredStarShipKeysLength).toBe(4);
     });
@@ -94,7 +96,7 @@ describe('test actions with sample store', () => {
         changeTableHeaders(sampleResponse, activeTableHeaders, 'model')
       );
       const newState = store.getState();
-      expect(newState.starShip.activeDataKeys.length).toBe(2);
+      expect(newState.starShipAnalysis.activeDataKeys.length).toBe(2);
     });
   });
 
@@ -107,7 +109,8 @@ describe('test actions with sample store', () => {
       ])
     );
     const newState = store.getState();
-    const filtered: StarShipFiltered[] = newState.starShip.filteredStarShipData;
+    const filtered: StarShipFiltered[] =
+      newState.starShipAnalysis.filteredStarShipData;
     const millenniumFalcon = filtered.filter(
       data => data.name === 'Millennium Falcon'
     );
@@ -153,13 +156,17 @@ describe('sorting algorithms', () => {
     test('sort alphabetically & reverse sort', () => {
       store.dispatch(sortAlphabetically(arrayToBeSorted, 'name'));
       const newState = store.getState();
-      expect(newState.starShip.filteredStarShipData).toEqual(sortedByName);
-      expect(newState.starShip.lastSorted).toBe('name');
+      expect(newState.starShipAnalysis.filteredStarShipData).toEqual(
+        sortedByName
+      );
+      expect(newState.starShipAnalysis.lastSorted).toBe('name');
 
       store.dispatch(reverseSort(sortedByName));
       const updatedState = store.getState();
-      expect(updatedState.starShip.filteredStarShipData).toEqual(reverseSorted);
-      expect(updatedState.starShip.lastSorted).toBe('');
+      expect(updatedState.starShipAnalysis.filteredStarShipData).toEqual(
+        reverseSorted
+      );
+      expect(updatedState.starShipAnalysis.lastSorted).toBe('');
     });
   });
 
@@ -188,13 +195,17 @@ describe('sorting algorithms', () => {
     test('sort nummerically & reverse sort', () => {
       store.dispatch(sortNummerically(arrayToBeSorted, 'temp'));
       const newState = store.getState();
-      expect(newState.starShip.filteredStarShipData).toEqual(sortedByTemp);
-      expect(newState.starShip.lastSorted).toBe('temp');
+      expect(newState.starShipAnalysis.filteredStarShipData).toEqual(
+        sortedByTemp
+      );
+      expect(newState.starShipAnalysis.lastSorted).toBe('temp');
 
       store.dispatch(reverseSort(sortedByTemp));
       const updatedState = store.getState();
-      expect(updatedState.starShip.filteredStarShipData).toEqual(reverseSorted);
-      expect(updatedState.starShip.lastSorted).toBe('');
+      expect(updatedState.starShipAnalysis.filteredStarShipData).toEqual(
+        reverseSorted
+      );
+      expect(updatedState.starShipAnalysis.lastSorted).toBe('');
     });
   });
 
@@ -241,15 +252,17 @@ describe('sorting algorithms', () => {
     test('sort nummerically & reverse sort', () => {
       store.dispatch(sortConsumables(arrayToBeSorted, 'consumable'));
       const newState = store.getState();
-      expect(newState.starShip.filteredStarShipData).toEqual(
+      expect(newState.starShipAnalysis.filteredStarShipData).toEqual(
         sortedByConsumable
       );
-      expect(newState.starShip.lastSorted).toBe('consumable');
+      expect(newState.starShipAnalysis.lastSorted).toBe('consumable');
 
       store.dispatch(reverseSort(sortedByConsumable));
       const updatedState = store.getState();
-      expect(updatedState.starShip.filteredStarShipData).toEqual(reverseSorted);
-      expect(updatedState.starShip.lastSorted).toBe('');
+      expect(updatedState.starShipAnalysis.filteredStarShipData).toEqual(
+        reverseSorted
+      );
+      expect(updatedState.starShipAnalysis.lastSorted).toBe('');
     });
   });
 });

@@ -37,7 +37,7 @@ describe('redux properties', () => {
   });
 
   test('has access to redux store', () => {
-    const storeState = { starShip: initialState, loading: false };
+    const storeState = { starShipAnalysis: initialState, loading: false };
     const wrapper = setup(storeState);
     const allStarShipsProp = wrapper.instance().props.allStarShips;
     const filteredStarShipsProp = wrapper.instance().props.filteredStarShips;

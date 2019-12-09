@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
-import starShip, { StarShipState } from './reducers/starShip';
+import starShipAnalysis, { StarShipState } from './reducers/starShipAnalysis';
 import loading from './reducers/loading';
 
 export interface StoreState {
-  starShip: StarShipState;
+  starShipAnalysis: StarShipState;
   loading: boolean;
 }
 
 const rootReducer = combineReducers<StoreState>({
-  starShip,
+  starShipAnalysis,
   loading
 });
 

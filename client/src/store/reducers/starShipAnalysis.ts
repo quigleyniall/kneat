@@ -28,7 +28,7 @@ export const initialState = {
   loading: false
 };
 
-const starShipReducer = (
+const starShipAnalysis = (
   state: StarShipState = initialState,
   action: Action
 ) => {
@@ -60,4 +60,4 @@ const starShipReducer = (
   }
 };
 
-export default starShipReducer;
+export default starShipAnalysis;

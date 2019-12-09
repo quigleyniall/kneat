@@ -1,9 +1,9 @@
 import { ActionTypes } from '../actions';
-import starShipReducer, { initialState } from './starShipAnalysis';
+import starShipAnalysis, { initialState } from './starShipAnalysis';
 import { sampleResponse } from '../../utils/sampleResponse';
 
 test('stores response from api call', () => {
-  const result = starShipReducer(initialState, {
+  const result = starShipAnalysis(initialState, {
     type: ActionTypes.makeApiCall,
     payload: sampleResponse
   });
@@ -11,7 +11,7 @@ test('stores response from api call', () => {
 });
 
 test('stores correct search term', () => {
-  const result = starShipReducer(initialState, {
+  const result = starShipAnalysis(initialState, {
     type: ActionTypes.searchChange,
     payload: '3000'
   });
@@ -19,7 +19,7 @@ test('stores correct search term', () => {
 });
 
 test('chage table headers and filters data', () => {
-  const result = starShipReducer(initialState, {
+  const result = starShipAnalysis(initialState, {
     type: ActionTypes.changeTableHeaders,
     filteredData: sampleResponse,
     newActiveKeys: ['name']
@@ -29,7 +29,7 @@ test('chage table headers and filters data', () => {
 });
 
 test('stores sorted data', () => {
-  const result = starShipReducer(initialState, {
+  const result = starShipAnalysis(initialState, {
     type: ActionTypes.sortData,
     sortedArray: sampleResponse,
     lastSorted: 'name'
@@ -39,7 +39,7 @@ test('stores sorted data', () => {
 });
 
 test('stores calculated resupplies array', () => {
-  const result = starShipReducer(initialState, {
+  const result = starShipAnalysis(initialState, {
     type: ActionTypes.calcResupplies,
     sortedStarShips: sampleResponse
   });
