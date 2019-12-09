@@ -10,6 +10,8 @@ import {
   Loading
 } from './interfaces';
 import { checkTimeToResupply } from '../../utils/resupply';
+import { sortNummerically as nummericalSort } from '../../utils/sorting';
+import { filterObjectKeysInArray } from '../../utils/tableHelper';
 
 export const setLoading = (value: boolean): Loading => ({
   type: ActionTypes.loading,
@@ -32,6 +34,7 @@ export const onSearchChange = (searchTerm: string): SearchChange => ({
 });
 
 export const changeTableHeaders = (
+  array: any[],
   activeTableHeaders: string[],
   tableHeader: string
 ): ChangeTableHeaders => {
@@ -39,20 +42,50 @@ export const changeTableHeaders = (
     ? activeTableHeaders.filter(key => key !== tableHeader)
     : activeTableHeaders.concat(tableHeader);
 
+  const filteredData = filterObjectKeysInArray(array, newActiveKeys);
+
   return {
     type: ActionTypes.changeTableHeaders,
-    payload: newActiveKeys
+    newActiveKeys,
+    filteredData
   };
 };
 
 export const calcNumResupplies = (
+  allStarShips: any[],
   distance: string,
   activeDataKeys: string[]
-): NumResupplies => ({
-  type: ActionTypes.calcResupplies,
-  distance,
-  activeDataKeys
-});
+): NumResupplies => {
+  const starShipsWithResupplies = allStarShips.map(ship => {
+    const { consumables, MGLT } = ship;
+    if (consumables === 'unknown' || MGLT === 'unknown') {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      ship.number_of_resupplies = 'unknown';
+      return ship;
+    }
+    const distancePerHour = +distance / +MGLT;
+    const timeToResupply = checkTimeToResupply(consumables);
+
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    ship.number_of_resupplies = Math.floor(
+      distancePerHour / timeToResupply
+    ).toString();
+
+    return ship;
+  });
+  const starShipsActiveColumns = filterObjectKeysInArray(
+    starShipsWithResupplies,
+    activeDataKeys
+  );
+
+  return {
+    type: ActionTypes.calcResupplies,
+    sortedStarShips: nummericalSort(
+      starShipsActiveColumns,
+      'number_of_resupplies'
+    )
+  };
+};
 
 export const sortAlphabetically = (
   array: any[],
