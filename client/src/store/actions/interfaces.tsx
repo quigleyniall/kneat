@@ -13,7 +13,8 @@ export interface MakeApiCall {
 
 export interface ChangeTableHeaders {
   type: ActionTypes.changeTableHeaders;
-  payload: string[];
+  newActiveKeys: string[];
+  filteredData: StarShipFiltered[];
 }
 
 export interface SearchChange {
@@ -23,8 +24,7 @@ export interface SearchChange {
 
 export interface NumResupplies {
   type: ActionTypes.calcResupplies;
-  distance: string;
-  activeDataKeys: string[];
+  sortedStarShips: StarShipFiltered[];
 }
 
 export interface SortArray {
