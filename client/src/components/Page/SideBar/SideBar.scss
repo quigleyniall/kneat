@@ -29,6 +29,10 @@
     padding: 0;
     margin-top: 0;
 
+    .routerLink {
+      text-decoration: none;
+    }
+
     .link {
       text-decoration: none;
       border-bottom: 1px solid #606f82;
