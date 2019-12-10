@@ -1,18 +1,24 @@
-import { ActionTypes } from '../actions';
-import starShipAnalysis, { initialState } from './starShipAnalysis';
-import { sampleResponse } from '../../utils/sampleResponse';
+import { ActionTypes } from '../../actions';
+import { sampleResponse } from '../../../utils/sampleResponse';
+import { createAnalysisReducer, initialState } from './analysisReducer';
+
+const name = 'starShip';
+const starShipAnalysis = createAnalysisReducer(name);
 
 test('stores response from api call', () => {
   const result = starShipAnalysis(initialState, {
-    type: ActionTypes.makeStarShipApiCall,
+    type: ActionTypes.makeApiCall,
+    name,
     payload: sampleResponse
   });
-  expect(result.allStarShipData).toBe(sampleResponse);
+  expect(result.allData).toBe(sampleResponse);
 });
 
 test('stores correct search term', () => {
   const result = starShipAnalysis(initialState, {
-    type: ActionTypes.searchStarShipAnalysisChange,
+    type: ActionTypes.searchChange,
+    name,
+    search: '',
     payload: '3000'
   });
   expect(result.distance).toBe('3000');
@@ -20,28 +26,32 @@ test('stores correct search term', () => {
 
 test('chage table headers and filters data', () => {
   const result = starShipAnalysis(initialState, {
-    type: ActionTypes.changeStarShipAnalysisTableHeaders,
+    type: ActionTypes.changeTableHeaders,
     filteredData: sampleResponse,
+    name,
+    search: '',
     newActiveKeys: ['name']
   });
-  expect(result.filteredStarShipData).toBe(sampleResponse);
+  expect(result.filteredData).toBe(sampleResponse);
   expect(result.activeDataKeys).toEqual(['name']);
 });
 
 test('stores sorted data', () => {
   const result = starShipAnalysis(initialState, {
-    type: ActionTypes.sortStarShipAnalysisData,
+    type: ActionTypes.sortData,
     sortedArray: sampleResponse,
-    lastSorted: 'name'
+    lastSorted: 'name',
+    name
   });
-  expect(result.filteredStarShipData).toBe(sampleResponse);
+  expect(result.filteredData).toBe(sampleResponse);
   expect(result.lastSorted).toBe('name');
 });
 
 test('stores calculated resupplies array', () => {
   const result = starShipAnalysis(initialState, {
     type: ActionTypes.calcResupplies,
-    sortedStarShips: sampleResponse
+    sorted: sampleResponse,
+    name
   });
-  expect(result.filteredStarShipData).toEqual(sampleResponse);
+  expect(result.filteredData).toEqual(sampleResponse);
 });

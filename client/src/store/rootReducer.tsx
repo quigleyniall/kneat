@@ -1,32 +1,24 @@
 import { combineReducers } from 'redux';
-import starShipAnalysis, {
-  StarShipAnalysis
-} from './reducers/starShipAnalysis';
-import starShip, { StarShip } from './reducers/starShip';
-import loading from './reducers/loading';
-import film, { Film } from './reducers/films';
-import species, { Species } from './reducers/species';
-import people, { People } from './reducers/people';
-import vehicle, { Vehicle } from './reducers/vehicle';
+import { createGeneralReducer } from './reducers/generalReducer/generalReducer';
+
+import { createAnalysisReducer } from './reducers/analysisReducer/analysisReducer';
 
 export interface StoreState {
-  film: Film;
-  starShipAnalysis: StarShipAnalysis;
-  starShip: StarShip;
-  species: Species;
-  people: People;
-  vehicle: Vehicle;
-  loading: boolean;
+  film: any;
+  starShipAnalysis: any;
+  starShip: any;
+  species: any;
+  people: any;
+  vehicle: any;
 }
 
 const rootReducer = combineReducers<StoreState>({
-  film,
-  starShipAnalysis,
-  species,
-  starShip,
-  loading,
-  vehicle,
-  people
+  film: createGeneralReducer('film'),
+  species: createGeneralReducer('species'),
+  starShip: createGeneralReducer('starShip'),
+  vehicle: createGeneralReducer('vehicle'),
+  people: createGeneralReducer('people'),
+  starShipAnalysis: createAnalysisReducer('starShipAnalysis')
 });
 
 export default rootReducer;

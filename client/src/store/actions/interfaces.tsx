@@ -2,86 +2,51 @@ import { ActionTypes } from './types';
 
 export interface Loading {
   type: ActionTypes.loading;
+  name: string;
   payload: boolean;
 }
 
 export interface MakeApiCall {
-  type: ApiCallType;
+  type: ActionTypes.makeApiCall;
+  name: string;
   payload: any;
 }
 
 export interface ChangeTableHeaders {
-  type: ChangeTableHeadersType;
+  type: ActionTypes.changeTableHeaders;
+  name: string;
   newActiveKeys: string[];
   filteredData: any;
+  search: string;
 }
 
 export interface SearchChange {
-  type: SearchChangeType;
+  type: ActionTypes.searchChange;
+  name: string;
   payload: string;
+  search: string;
 }
 
 export interface FindMatches {
-  type: FindMatchesType;
+  type: ActionTypes.findMatches;
+  name: string;
+  search: string;
 }
 
 export interface ClearSearch {
-  type: ClearSearchType;
+  type: ActionTypes.clearSearch;
+  name: string;
 }
 
 export interface NumResupplies {
   type: ActionTypes.calcResupplies;
-  sortedStarShips: any[];
+  sorted: any[];
+  name: string;
 }
 
 export interface SortArray {
-  type: SortArrayType;
+  type: ActionTypes.sortData;
   sortedArray: any;
   lastSorted: string;
+  name: string;
 }
-
-// action creator types
-export type ApiCallType =
-  | ActionTypes.makeFilmApiCall
-  | ActionTypes.makeStarShipApiCall
-  | ActionTypes.makeSpeciesApiCall
-  | ActionTypes.makePeopleApiCall
-  | ActionTypes.makeVehicleApiCall;
-
-export type SearchChangeType =
-  | ActionTypes.searchStarShipChange
-  | ActionTypes.searchStarShipAnalysisChange
-  | ActionTypes.searchFilmChange
-  | ActionTypes.searchSpeciesChange
-  | ActionTypes.searchVehicleChange
-  | ActionTypes.searchPeopleChange;
-
-export type ChangeTableHeadersType =
-  | ActionTypes.changeStarShipTableHeaders
-  | ActionTypes.changeStarShipAnalysisTableHeaders
-  | ActionTypes.changeFilmTableHeaders
-  | ActionTypes.changeSpeciesTableHeaders
-  | ActionTypes.changeVehicleTableHeaders
-  | ActionTypes.changePeopleTableHeaders;
-
-export type FindMatchesType =
-  | ActionTypes.findStarShipMatches
-  | ActionTypes.findFilmMatches
-  | ActionTypes.findSpeciesMatches
-  | ActionTypes.findVehicleMatches
-  | ActionTypes.findPeopleMatches;
-
-export type ClearSearchType =
-  | ActionTypes.clearStarShipSearch
-  | ActionTypes.clearSpeciesSearch
-  | ActionTypes.clearFilmSearch
-  | ActionTypes.clearPeopleSearch
-  | ActionTypes.clearVehicleSearch;
-
-export type SortArrayType =
-  | ActionTypes.sortStarShipData
-  | ActionTypes.sortStarShipAnalysisData
-  | ActionTypes.sortFilmData
-  | ActionTypes.sortSpeciesData
-  | ActionTypes.sortVehicleData
-  | ActionTypes.sortPeopleData;

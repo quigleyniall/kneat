@@ -9,48 +9,48 @@ import {
   NumResupplies,
   Loading,
   FindMatches,
-  ClearSearch,
-  ApiCallType,
-  SearchChangeType,
-  ChangeTableHeadersType,
-  FindMatchesType,
-  ClearSearchType,
-  SortArrayType
+  ClearSearch
 } from './interfaces';
 import { checkTimeToResupply } from '../../utils/resupply';
 import { sortNummerically as nummericalSort } from '../../utils/sorting';
 import { filterObjectKeysInArray } from '../../utils/tableHelper';
 
-export const setLoading = (value: boolean): Loading => ({
+export const setLoading = (value: boolean, name: string): Loading => ({
+  name,
   type: ActionTypes.loading,
   payload: value
 });
 
-export const makeApiCall = (url: string, ActionType: ApiCallType) => async (
+export const makeApiCall = (url: string, name: string) => async (
   dispatch: Dispatch
 ) => {
   const req = await axios.get(url);
   const res = await req.data;
 
   dispatch<MakeApiCall>({
-    type: ActionType,
+    type: ActionTypes.makeApiCall,
+    name,
     payload: res
   });
 };
 
 export const onSearchChange = (
   searchTerm: string,
-  ActionType: SearchChangeType
+  name: string,
+  search: string
 ): SearchChange => ({
-  type: ActionType,
-  payload: searchTerm
+  type: ActionTypes.searchChange,
+  name,
+  payload: searchTerm,
+  search
 });
 
 export const changeTableHeaders = (
   array: any[],
   activeTableHeaders: string[],
   tableHeader: string,
-  ActionType: ChangeTableHeadersType
+  name: string,
+  search: string
 ): ChangeTableHeaders => {
   const newActiveKeys = activeTableHeaders.includes(tableHeader)
     ? activeTableHeaders.filter(key => key !== tableHeader)
@@ -59,22 +59,26 @@ export const changeTableHeaders = (
   const filteredData = filterObjectKeysInArray(array, newActiveKeys);
 
   return {
-    type: ActionType,
+    type: ActionTypes.changeTableHeaders,
+    name,
     newActiveKeys,
-    filteredData
+    filteredData,
+    search
   };
 };
 
 export const calcNumResupplies = (
   allStarShips: any[],
   distance: string,
-  activeDataKeys: string[]
+  activeDataKeys: string[],
+  name: string
 ): NumResupplies => {
   const starShipsWithResupplies = allStarShips.map(ship => {
     const { consumables, MGLT } = ship;
     if (consumables === 'unknown' || MGLT === 'unknown') {
       // eslint-disable-next-line @typescript-eslint/camelcase
       ship.number_of_resupplies = 'unknown';
+
       return ship;
     }
     const distancePerHour = +distance / +MGLT;
@@ -93,26 +97,27 @@ export const calcNumResupplies = (
   );
 
   return {
+    name,
     type: ActionTypes.calcResupplies,
-    sortedStarShips: nummericalSort(
-      starShipsActiveColumns,
-      'number_of_resupplies'
-    )
+    sorted: nummericalSort(starShipsActiveColumns, 'number_of_resupplies')
   };
 };
 
-export const findMatches = (ActionType: FindMatchesType): FindMatches => ({
-  type: ActionType
+export const findMatches = (name: string, search: string): FindMatches => ({
+  type: ActionTypes.findMatches,
+  name,
+  search
 });
 
-export const clearSearch = (Action: ClearSearchType): ClearSearch => ({
-  type: Action
+export const clearSearch = (name: string): ClearSearch => ({
+  type: ActionTypes.clearSearch,
+  name
 });
 
 export const sortAlphabetically = (
   array: any[],
   objectKey: string,
-  ActionType: SortArrayType
+  name: string
 ): SortArray => {
   const sortedArray = array.sort((a, b) => {
     if (a[objectKey].toLowerCase() < b[objectKey].toLowerCase()) {
@@ -125,7 +130,8 @@ export const sortAlphabetically = (
   });
 
   return {
-    type: ActionType,
+    type: ActionTypes.sortData,
+    name,
     sortedArray,
     lastSorted: objectKey
   };
@@ -134,10 +140,15 @@ export const sortAlphabetically = (
 export const sortNummerically = (
   array: any[],
   objectKey: string,
-  ActionType: SortArrayType
+  name: string
 ): SortArray => {
   const sortedArray = array.sort((a, b) => {
-    if (b[objectKey] === 'unknown' || b[objectKey] === 'n/a') {
+    if (
+      b[objectKey] === 'unknown' ||
+      b[objectKey] === 'n/a' ||
+      b[objectKey] === 'No Conusmables Available' ||
+      b[objectKey] === 'Live Food Tanks Available'
+    ) {
       return -1;
     }
 
@@ -145,7 +156,8 @@ export const sortNummerically = (
   });
 
   return {
-    type: ActionType,
+    type: ActionTypes.sortData,
+    name,
     sortedArray,
     lastSorted: objectKey
   };
@@ -154,14 +166,24 @@ export const sortNummerically = (
 export const sortConsumables = (
   array: any[],
   objectKey: string,
-  ActionType: SortArrayType
+  name: string
 ): SortArray => {
   array.sort((a, b) => {
-    if (b[objectKey] === 'unknown') {
+    if (
+      b[objectKey] === 'unknown' ||
+      b[objectKey] === 'none' ||
+      b[objectKey] === 'Live food tanks' ||
+      b[objectKey] == 0
+    ) {
       return -1;
     }
 
-    if (a[objectKey] === 'unknown') {
+    if (
+      a[objectKey] === 'unknown' ||
+      a[objectKey] === 'none' ||
+      a[objectKey] === 'Live food tanks' ||
+      a[objectKey] == 0
+    ) {
       return 1;
     }
 
@@ -170,17 +192,16 @@ export const sortConsumables = (
     );
   });
   return {
-    type: ActionType,
+    type: ActionTypes.sortData,
+    name,
     sortedArray: array,
     lastSorted: objectKey
   };
 };
 
-export const reverseSort = (
-  array: any[],
-  ActionType: SortArrayType
-): SortArray => ({
-  type: ActionType,
+export const reverseSort = (array: any[], name: string): SortArray => ({
+  type: ActionTypes.sortData,
+  name,
   sortedArray: array.reverse(),
   lastSorted: ''
 });

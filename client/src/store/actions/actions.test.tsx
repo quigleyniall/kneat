@@ -10,10 +10,11 @@ import {
   sortAlphabetically,
   reverseSort,
   sortNummerically,
-  sortConsumables
+  sortConsumables,
+  findMatches,
+  clearSearch
 } from './actions';
 import { StarShipFiltered } from '../../interfaces';
-import { ActionTypes } from './types';
 
 describe('test actions with empty store', () => {
   let store: any;
@@ -23,15 +24,15 @@ describe('test actions with empty store', () => {
 
   describe('set correct loading value', () => {
     test('sets loading to true', () => {
-      store.dispatch(setLoading(true));
+      store.dispatch(setLoading(true, 'starShipAnalysis'));
       const newState = store.getState();
-      expect(newState.loading).toBe(true);
+      expect(newState.starShipAnalysis.loading).toBe(true);
     });
 
     test('sets loading to false', () => {
-      store.dispatch(setLoading(false));
+      store.dispatch(setLoading(false, 'starShipAnalysis'));
       const newState = store.getState();
-      expect(newState.loading).toBe(false);
+      expect(newState.starShipAnalysis.loading).toBe(false);
     });
   });
 
@@ -53,20 +54,42 @@ describe('test actions with empty store', () => {
       });
 
       return store
-        .dispatch(makeApiCall('/starships', ActionTypes.makeStarShipApiCall))
+        .dispatch(makeApiCall('/starships', 'starShipAnalysis'))
         .then(() => {
           const newState = store.getState();
-          expect(newState.starShipAnalysis.allStarShipData).toEqual(
-            sampleResponse
-          );
+          expect(newState.starShipAnalysis.allData).toEqual(sampleResponse);
         });
+    });
+
+    test('returns matches for starships', () => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: sampleResponse
+        });
+      });
+
+      store.dispatch(makeApiCall('/starships', 'starShip')).then(() => {
+        const newState = store.getState();
+        expect(newState.starShip.allData).toEqual(sampleResponse);
+
+        store.dispatch(onSearchChange('y-wing', 'starShip', 'name'));
+        store.dispatch(findMatches('starShip', 'name'));
+
+        const upDatedState = store.getState();
+        expect(upDatedState.searchTerm).toBe('y-wing');
+        expect(upDatedState.filteredData[0].name).toBe('y-wing');
+
+        store.dispatch(clearSearch('starShip'));
+        const finalState = store.getState();
+        expect(finalState.searchTerm).toBe('');
+      });
     });
   });
 
   test('sets correct search term', () => {
-    store.dispatch(
-      onSearchChange('10000', ActionTypes.searchStarShipAnalysisChange)
-    );
+    store.dispatch(onSearchChange('10000', 'starShipAnalysis', 'distance'));
     const newState = store.getState();
     expect(newState.starShipAnalysis.distance).toBe('10000');
   });
@@ -76,7 +99,7 @@ describe('test actions with sample store', () => {
   let store: any;
   beforeEach(() => {
     store = storeFactory({
-      starShipAnalysis: { allStarShipData: sampleResponse }
+      starShipAnalysis: { allData: sampleResponse }
     });
   });
 
@@ -89,14 +112,15 @@ describe('test actions with sample store', () => {
           sampleResponse,
           activeTableHeaders,
           'manufacturer',
-          ActionTypes.changeStarShipAnalysisTableHeaders
+          'starShipAnalysis',
+          'distance'
         )
       );
       const newState = store.getState();
       expect(newState.starShipAnalysis.activeDataKeys.length).toBe(4);
 
       const filteredStarShipKeysLength = Object.keys(
-        newState.starShipAnalysis.filteredStarShipData[0]
+        newState.starShipAnalysis.filteredData[0]
       ).length;
       expect(filteredStarShipKeysLength).toBe(4);
     });
@@ -107,7 +131,8 @@ describe('test actions with sample store', () => {
           sampleResponse,
           activeTableHeaders,
           'model',
-          ActionTypes.changeStarShipAnalysisTableHeaders
+          'starShipAnalysis',
+          'distance'
         )
       );
       const newState = store.getState();
@@ -117,15 +142,15 @@ describe('test actions with sample store', () => {
 
   test('calculate number of resupplies', () => {
     store.dispatch(
-      calcNumResupplies(sampleResponse, '1000000', [
-        'name',
-        'model',
-        'number_of_resupplies'
-      ])
+      calcNumResupplies(
+        sampleResponse,
+        '1000000',
+        ['name', 'model', 'number_of_resupplies'],
+        'starShipAnalysis'
+      )
     );
     const newState = store.getState();
-    const filtered: StarShipFiltered[] =
-      newState.starShipAnalysis.filteredStarShipData;
+    const filtered: StarShipFiltered[] = newState.starShipAnalysis.filteredData;
     const millenniumFalcon = filtered.filter(
       data => data.name === 'Millennium Falcon'
     );
@@ -170,25 +195,15 @@ describe('sorting algorithms', () => {
 
     test('sort alphabetically & reverse sort', () => {
       store.dispatch(
-        sortAlphabetically(
-          arrayToBeSorted,
-          'name',
-          ActionTypes.sortStarShipAnalysisData
-        )
+        sortAlphabetically(arrayToBeSorted, 'name', 'starShipAnalysis')
       );
       const newState = store.getState();
-      expect(newState.starShipAnalysis.filteredStarShipData).toEqual(
-        sortedByName
-      );
+      expect(newState.starShipAnalysis.filteredData).toEqual(sortedByName);
       expect(newState.starShipAnalysis.lastSorted).toBe('name');
 
-      store.dispatch(
-        reverseSort(sortedByName, ActionTypes.sortStarShipAnalysisData)
-      );
+      store.dispatch(reverseSort(sortedByName, 'starShipAnalysis'));
       const updatedState = store.getState();
-      expect(updatedState.starShipAnalysis.filteredStarShipData).toEqual(
-        reverseSorted
-      );
+      expect(updatedState.starShipAnalysis.filteredData).toEqual(reverseSorted);
       expect(updatedState.starShipAnalysis.lastSorted).toBe('');
     });
   });
@@ -217,25 +232,15 @@ describe('sorting algorithms', () => {
 
     test('sort nummerically & reverse sort', () => {
       store.dispatch(
-        sortNummerically(
-          arrayToBeSorted,
-          'temp',
-          ActionTypes.sortStarShipAnalysisData
-        )
+        sortNummerically(arrayToBeSorted, 'temp', 'starShipAnalysis')
       );
       const newState = store.getState();
-      expect(newState.starShipAnalysis.filteredStarShipData).toEqual(
-        sortedByTemp
-      );
+      expect(newState.starShipAnalysis.filteredData).toEqual(sortedByTemp);
       expect(newState.starShipAnalysis.lastSorted).toBe('temp');
 
-      store.dispatch(
-        reverseSort(sortedByTemp, ActionTypes.sortStarShipAnalysisData)
-      );
+      store.dispatch(reverseSort(sortedByTemp, 'starShipAnalysis'));
       const updatedState = store.getState();
-      expect(updatedState.starShipAnalysis.filteredStarShipData).toEqual(
-        reverseSorted
-      );
+      expect(updatedState.starShipAnalysis.filteredData).toEqual(reverseSorted);
       expect(updatedState.starShipAnalysis.lastSorted).toBe('');
     });
   });
@@ -282,25 +287,17 @@ describe('sorting algorithms', () => {
 
     test('sort nummerically & reverse sort', () => {
       store.dispatch(
-        sortConsumables(
-          arrayToBeSorted,
-          'consumable',
-          ActionTypes.sortStarShipAnalysisData
-        )
+        sortConsumables(arrayToBeSorted, 'consumable', 'starShipAnalysis')
       );
       const newState = store.getState();
-      expect(newState.starShipAnalysis.filteredStarShipData).toEqual(
+      expect(newState.starShipAnalysis.filteredData).toEqual(
         sortedByConsumable
       );
       expect(newState.starShipAnalysis.lastSorted).toBe('consumable');
 
-      store.dispatch(
-        reverseSort(sortedByConsumable, ActionTypes.sortStarShipAnalysisData)
-      );
+      store.dispatch(reverseSort(sortedByConsumable, 'starShipAnalysis'));
       const updatedState = store.getState();
-      expect(updatedState.starShipAnalysis.filteredStarShipData).toEqual(
-        reverseSorted
-      );
+      expect(updatedState.starShipAnalysis.filteredData).toEqual(reverseSorted);
       expect(updatedState.starShipAnalysis.lastSorted).toBe('');
     });
   });
