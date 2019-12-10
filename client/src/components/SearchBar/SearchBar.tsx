@@ -27,6 +27,7 @@ const SearchBar = ({
         name="searchBar"
         type="text"
         handleChange={onSearchChange}
+        value={searchTerm}
       />
       <Button
         data-test="search-button"

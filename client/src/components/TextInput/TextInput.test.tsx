@@ -8,7 +8,8 @@ const onChangeMock = jest.fn();
 const props = {
   name: 'model',
   type: 'text',
-  handleChange: onChangeMock
+  handleChange: onChangeMock,
+  value: ''
 };
 
 const wrapper = shallow(<TextInput {...props} />);
