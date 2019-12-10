@@ -25,7 +25,7 @@ import {
 } from '../../components';
 import { starShipNummericallyColumns } from '../../utils/tableHelper';
 import { StoreState } from '../../store/rootReducer';
-import { StarShipResponse, StarShipFiltered } from '../../interfaces/starship';
+import { StarShipResponse, StarShipFiltered } from '../../interfaces';
 
 interface IProps {
   store?: any;
@@ -64,7 +64,10 @@ export class UnconnectedStarShip extends React.Component<IProps, IState> {
 
     if (allStarShips.length === 0) {
       this.props.setLoading(true);
-      await this.props.makeApiCall();
+      await this.props.makeApiCall(
+        '/starships',
+        ActionTypes.makeStarShipApiCall
+      );
       this.props.setLoading(false);
     }
   }

@@ -12,7 +12,7 @@ import {
   sortNummerically,
   sortConsumables
 } from './actions';
-import { StarShipFiltered } from '../../interfaces/starship';
+import { StarShipFiltered } from '../../interfaces';
 import { ActionTypes } from './types';
 
 describe('test actions with empty store', () => {
@@ -52,12 +52,14 @@ describe('test actions with empty store', () => {
         });
       });
 
-      return store.dispatch(makeApiCall()).then(() => {
-        const newState = store.getState();
-        expect(newState.starShipAnalysis.allStarShipData).toEqual(
-          sampleResponse
-        );
-      });
+      return store
+        .dispatch(makeApiCall('/starships', ActionTypes.makeStarShipApiCall))
+        .then(() => {
+          const newState = store.getState();
+          expect(newState.starShipAnalysis.allStarShipData).toEqual(
+            sampleResponse
+          );
+        });
     });
   });
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { ActionTypes } from './types';
+import { ActionTypes, Action } from './types';
 import {
   MakeApiCall,
   SearchChange,
@@ -9,7 +9,13 @@ import {
   NumResupplies,
   Loading,
   FindMatches,
-  ClearSearch
+  ClearSearch,
+  ApiCallType,
+  SearchChangeType,
+  ChangeTableHeadersType,
+  FindMatchesType,
+  ClearSearchType,
+  SortArrayType
 } from './interfaces';
 import { checkTimeToResupply } from '../../utils/resupply';
 import { sortNummerically as nummericalSort } from '../../utils/sorting';
@@ -20,21 +26,21 @@ export const setLoading = (value: boolean): Loading => ({
   payload: value
 });
 
-export const makeApiCall = () => async (dispatch: Dispatch) => {
-  const req = await axios.get('/starships');
+export const makeApiCall = (url: string, ActionType: ApiCallType) => async (
+  dispatch: Dispatch
+) => {
+  const req = await axios.get(url);
   const res = await req.data;
 
   dispatch<MakeApiCall>({
-    type: ActionTypes.makeApiCall,
+    type: ActionType,
     payload: res
   });
 };
 
 export const onSearchChange = (
   searchTerm: string,
-  ActionType:
-    | ActionTypes.searchStarShipChange
-    | ActionTypes.searchStarShipAnalysisChange
+  ActionType: SearchChangeType
 ): SearchChange => ({
   type: ActionType,
   payload: searchTerm
@@ -44,9 +50,7 @@ export const changeTableHeaders = (
   array: any[],
   activeTableHeaders: string[],
   tableHeader: string,
-  ActionType:
-    | ActionTypes.changeStarShipTableHeaders
-    | ActionTypes.changeStarShipAnalysisTableHeaders
+  ActionType: ChangeTableHeadersType
 ): ChangeTableHeaders => {
   const newActiveKeys = activeTableHeaders.includes(tableHeader)
     ? activeTableHeaders.filter(key => key !== tableHeader)
@@ -97,24 +101,18 @@ export const calcNumResupplies = (
   };
 };
 
-export const findMatches = (
-  ActionType: ActionTypes.findStarShipMatches
-): FindMatches => ({
+export const findMatches = (ActionType: FindMatchesType): FindMatches => ({
   type: ActionType
 });
 
-export const clearSearch = (
-  Action: ActionTypes.clearStarShipSearch
-): ClearSearch => ({
+export const clearSearch = (Action: ClearSearchType): ClearSearch => ({
   type: Action
 });
 
 export const sortAlphabetically = (
   array: any[],
   objectKey: string,
-  ActionType:
-    | ActionTypes.sortStarShipAnalysisData
-    | ActionTypes.sortStarShipData
+  ActionType: SortArrayType
 ): SortArray => {
   const sortedArray = array.sort((a, b) => {
     if (a[objectKey].toLowerCase() < b[objectKey].toLowerCase()) {
@@ -136,9 +134,7 @@ export const sortAlphabetically = (
 export const sortNummerically = (
   array: any[],
   objectKey: string,
-  ActionType:
-    | ActionTypes.sortStarShipAnalysisData
-    | ActionTypes.sortStarShipData
+  ActionType: SortArrayType
 ): SortArray => {
   const sortedArray = array.sort((a, b) => {
     if (b[objectKey] === 'unknown' || b[objectKey] === 'n/a') {
@@ -158,9 +154,7 @@ export const sortNummerically = (
 export const sortConsumables = (
   array: any[],
   objectKey: string,
-  ActionType:
-    | ActionTypes.sortStarShipAnalysisData
-    | ActionTypes.sortStarShipData
+  ActionType: SortArrayType
 ): SortArray => {
   array.sort((a, b) => {
     if (b[objectKey] === 'unknown') {
@@ -184,9 +178,7 @@ export const sortConsumables = (
 
 export const reverseSort = (
   array: any[],
-  ActionType:
-    | ActionTypes.sortStarShipAnalysisData
-    | ActionTypes.sortStarShipData
+  ActionType: SortArrayType
 ): SortArray => ({
   type: ActionType,
   sortedArray: array.reverse(),

@@ -3,7 +3,7 @@ import {
   starShipFilterKeys,
   filterObjectKeysInArray
 } from '../../utils/tableHelper';
-import { StarShipResponse, StarShipFiltered } from '../../interfaces/starship';
+import { StarShipResponse, StarShipFiltered } from '../../interfaces';
 
 export interface StarShip {
   allStarShipData: StarShipResponse[];
@@ -27,7 +27,7 @@ export const initialState = {
 
 const starShip = (state: StarShip = initialState, action: Action) => {
   switch (action.type) {
-    case ActionTypes.makeApiCall:
+    case ActionTypes.makeStarShipApiCall:
       return {
         ...state,
         allStarShipData: action.payload,

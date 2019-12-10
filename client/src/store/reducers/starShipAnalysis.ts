@@ -1,6 +1,6 @@
 import { ActionTypes, Action } from '../actions';
 import { starShipAnalysisFilterKeys } from '../../utils/tableHelper';
-import { StarShipResponse, StarShipFiltered } from '../../interfaces/starship';
+import { StarShipResponse, StarShipFiltered } from '../../interfaces';
 
 export interface StarShipAnalysis {
   allStarShipData: StarShipResponse[];
@@ -33,7 +33,7 @@ const starShipAnalysis = (
   action: Action
 ) => {
   switch (action.type) {
-    case ActionTypes.makeApiCall:
+    case ActionTypes.makeStarShipApiCall:
       return { ...state, allStarShipData: action.payload };
 
     case ActionTypes.searchStarShipAnalysisChange:

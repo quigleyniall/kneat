@@ -4,7 +4,7 @@ import { sampleResponse } from '../../utils/sampleResponse';
 
 test('stores response from api call', () => {
   const result = starShipAnalysis(initialState, {
-    type: ActionTypes.makeApiCall,
+    type: ActionTypes.makeStarShipApiCall,
     payload: sampleResponse
   });
   expect(result.allStarShipData).toBe(sampleResponse);
