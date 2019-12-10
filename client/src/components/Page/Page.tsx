@@ -14,8 +14,10 @@ const Page = ({ children, navHeader }: IProps) => (
     <Nav data-test="nav" navHeader={navHeader} />
     <div className="page">
       <SideBar data-test="side-bar" />
-      <div className="main" data-test="page-children">
-        {children}
+      <div className="main-container">
+        <div className="main" data-test="page-children">
+          {children}
+        </div>
       </div>
     </div>
   </div>
