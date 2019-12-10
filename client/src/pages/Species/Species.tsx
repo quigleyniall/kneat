@@ -25,6 +25,7 @@ import {
 } from '../../components';
 import { StoreState } from '../../store/rootReducer';
 import { SpeciesResponse, SpeciesFiltered } from '../../interfaces';
+import { specitesNummericalColumns } from '../../utils/tableHelper';
 
 interface IProps {
   store?: any;
@@ -102,6 +103,14 @@ export class UnconnectedSpecies extends React.Component<IProps, IState> {
     if (lastSorted === name) {
       return this.props.reverseSort(
         filteredSpecies,
+        ActionTypes.sortSpeciesData
+      );
+    }
+
+    if (specitesNummericalColumns.includes(name)) {
+      return this.props.sortNummerically(
+        filteredSpecies,
+        name,
         ActionTypes.sortSpeciesData
       );
     }

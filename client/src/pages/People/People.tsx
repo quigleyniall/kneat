@@ -25,6 +25,7 @@ import {
 } from '../../components';
 import { StoreState } from '../../store/rootReducer';
 import { PeopleResponse, PeopleFiltered } from '../../interfaces';
+import { peopleNummericalColumns } from '../../utils/tableHelper';
 
 interface IProps {
   store?: any;
@@ -101,6 +102,13 @@ export class UnconnectedPeople extends React.Component<IProps, IState> {
 
     if (lastSorted === name) {
       return this.props.reverseSort(filteredPeople, ActionTypes.sortPeopleData);
+    }
+    if (peopleNummericalColumns.includes(name)) {
+      return this.props.sortNummerically(
+        filteredPeople,
+        name,
+        ActionTypes.sortPeopleData
+      );
     }
     if (name === 'consumables') {
       return this.props.sortConsumables(

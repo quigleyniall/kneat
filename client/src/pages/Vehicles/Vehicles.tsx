@@ -25,6 +25,7 @@ import {
 } from '../../components';
 import { StoreState } from '../../store/rootReducer';
 import { VehicleResponse, VehicleFiltered } from '../../interfaces';
+import { vehicleNummericalColumns } from '../../utils/tableHelper';
 
 interface IProps {
   store?: any;
@@ -102,6 +103,14 @@ export class UnconnectedVehicle extends React.Component<IProps, IState> {
     if (lastSorted === name) {
       return this.props.reverseSort(
         filteredVehicle,
+        ActionTypes.sortVehicleData
+      );
+    }
+
+    if (vehicleNummericalColumns.includes(name)) {
+      return this.props.sortNummerically(
+        filteredVehicle,
+        name,
         ActionTypes.sortVehicleData
       );
     }

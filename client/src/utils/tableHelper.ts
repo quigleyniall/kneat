@@ -11,18 +11,6 @@ export const filterObjectKeysInArray = (
       }, {});
   });
 
-export const starShipNummericallyColumns = [
-  'MGLT',
-  'cost_in_credits',
-  'number_of_resupplies',
-  'length',
-  'max_atmosphering_speed',
-  'crew',
-  'passengers',
-  'cargo_capacity',
-  'hyperdrive_rating'
-];
-
 export const starShipAnalysisFilterKeys = [
   'name',
   'model',
@@ -56,7 +44,17 @@ export const starShipFilterKeys = [
   'starship_class'
 ];
 
-export const filmNummericalColumns = ['episode_id'];
+export const starShipNummericallyColumns = [
+  'MGLT',
+  'cost_in_credits',
+  'number_of_resupplies',
+  'length',
+  'max_atmosphering_speed',
+  'crew',
+  'passengers',
+  'cargo_capacity',
+  'hyperdrive_rating'
+];
 
 export const filmFilterKeys = [
   'title',
@@ -66,6 +64,8 @@ export const filmFilterKeys = [
   'producer',
   'release_date'
 ];
+
+export const filmNummericalColumns = ['episode_id'];
 
 export const speciesFilterKeys = [
   'name',
@@ -77,6 +77,17 @@ export const speciesFilterKeys = [
   'eye_colors',
   'average_lifespan',
   'language'
+];
+
+export const specitesNummericalColumns = ['average_height', 'average_lifespan'];
+
+export const vehicleNummericalColumns = [
+  'cost_in_credits',
+  'length',
+  'max_atmosphering_speed',
+  'crew',
+  'passengers',
+  'cargo_capacity'
 ];
 
 export const vehicleFilterKeys = [
@@ -92,6 +103,8 @@ export const vehicleFilterKeys = [
   'consumables',
   'vehicle_class'
 ];
+
+export const peopleNummericalColumns = ['height', 'mass'];
 
 export const peopleFilterKeys = [
   'name',

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { ActionTypes, Action } from './types';
+import { ActionTypes } from './types';
 import {
   MakeApiCall,
   SearchChange,
