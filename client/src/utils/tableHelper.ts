@@ -44,7 +44,7 @@ export const starShipFilterKeys = [
   'starship_class'
 ];
 
-export const starShipNummericallyColumns = [
+export const starShipNummericalColumns = [
   'MGLT',
   'cost_in_credits',
   'number_of_resupplies',
@@ -79,7 +79,7 @@ export const speciesFilterKeys = [
   'language'
 ];
 
-export const specitesNummericalColumns = ['average_height', 'average_lifespan'];
+export const speciesNummericalColumns = ['average_height', 'average_lifespan'];
 
 export const vehicleNummericalColumns = [
   'cost_in_credits',
