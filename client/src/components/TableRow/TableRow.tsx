@@ -1,8 +1,8 @@
 import React from 'react';
-import { StarShipFiltered } from '../../interfaces/starship';
+import { StarShipFiltered, FilmFiltered } from '../../interfaces';
 
 export interface Trow {
-  rowData: StarShipFiltered;
+  rowData: StarShipFiltered | FilmFiltered;
 }
 
 const TableRow = ({ rowData }: Trow) => {

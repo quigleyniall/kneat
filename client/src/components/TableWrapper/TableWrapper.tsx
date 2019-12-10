@@ -1,11 +1,11 @@
 import React from 'react';
 import { format } from '../../utils/formatText';
 import './Table.scss';
-import { StarShipFiltered } from '../../interfaces/starship';
+import { StarShipFiltered, FilmFiltered } from '../../interfaces';
 
 interface IProps {
   children: React.ReactNode;
-  headers: StarShipFiltered;
+  headers: StarShipFiltered | FilmFiltered;
   sortResult: (name: string) => void;
 }
 
