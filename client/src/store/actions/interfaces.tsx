@@ -12,14 +12,26 @@ export interface MakeApiCall {
 }
 
 export interface ChangeTableHeaders {
-  type: ActionTypes.changeTableHeaders;
+  type:
+    | ActionTypes.changeStarShipTableHeaders
+    | ActionTypes.changeStarShipAnalysisTableHeaders;
   newActiveKeys: string[];
   filteredData: StarShipFiltered[];
 }
 
 export interface SearchChange {
-  type: ActionTypes.searchChange;
+  type:
+    | ActionTypes.searchStarShipChange
+    | ActionTypes.searchStarShipAnalysisChange;
   payload: string;
+}
+
+export interface FindMatches {
+  type: ActionTypes.findStarShipMatches;
+}
+
+export interface ClearSearch {
+  type: ActionTypes.clearStarShipSearch;
 }
 
 export interface NumResupplies {
@@ -28,7 +40,7 @@ export interface NumResupplies {
 }
 
 export interface SortArray {
-  type: ActionTypes.sortData;
+  type: ActionTypes.sortStarShipData | ActionTypes.sortStarShipAnalysisData;
   sortedArray: StarShipFiltered[];
   lastSorted: string;
 }

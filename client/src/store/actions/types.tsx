@@ -4,15 +4,22 @@ import {
   ChangeTableHeaders,
   SortArray,
   NumResupplies,
-  Loading
+  Loading,
+  FindMatches,
+  ClearSearch
 } from './interfaces';
 
 export enum ActionTypes {
   makeApiCall,
-  changeTableHeaders,
+  changeStarShipTableHeaders,
+  changeStarShipAnalysisTableHeaders,
+  clearStarShipSearch,
   calcResupplies,
-  sortData,
-  searchChange,
+  findStarShipMatches,
+  sortStarShipData,
+  searchStarShipChange,
+  searchStarShipAnalysisChange,
+  sortStarShipAnalysisData,
   loading
 }
 
@@ -22,4 +29,6 @@ export type Action =
   | ChangeTableHeaders
   | SortArray
   | NumResupplies
+  | FindMatches
+  | ClearSearch
   | Loading;

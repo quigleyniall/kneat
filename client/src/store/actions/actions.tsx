@@ -7,7 +7,9 @@ import {
   ChangeTableHeaders,
   SortArray,
   NumResupplies,
-  Loading
+  Loading,
+  FindMatches,
+  ClearSearch
 } from './interfaces';
 import { checkTimeToResupply } from '../../utils/resupply';
 import { sortNummerically as nummericalSort } from '../../utils/sorting';
@@ -28,15 +30,23 @@ export const makeApiCall = () => async (dispatch: Dispatch) => {
   });
 };
 
-export const onSearchChange = (searchTerm: string): SearchChange => ({
-  type: ActionTypes.searchChange,
+export const onSearchChange = (
+  searchTerm: string,
+  ActionType:
+    | ActionTypes.searchStarShipChange
+    | ActionTypes.searchStarShipAnalysisChange
+): SearchChange => ({
+  type: ActionType,
   payload: searchTerm
 });
 
 export const changeTableHeaders = (
   array: any[],
   activeTableHeaders: string[],
-  tableHeader: string
+  tableHeader: string,
+  ActionType:
+    | ActionTypes.changeStarShipTableHeaders
+    | ActionTypes.changeStarShipAnalysisTableHeaders
 ): ChangeTableHeaders => {
   const newActiveKeys = activeTableHeaders.includes(tableHeader)
     ? activeTableHeaders.filter(key => key !== tableHeader)
@@ -45,7 +55,7 @@ export const changeTableHeaders = (
   const filteredData = filterObjectKeysInArray(array, newActiveKeys);
 
   return {
-    type: ActionTypes.changeTableHeaders,
+    type: ActionType,
     newActiveKeys,
     filteredData
   };
@@ -87,9 +97,24 @@ export const calcNumResupplies = (
   };
 };
 
+export const findMatches = (
+  ActionType: ActionTypes.findStarShipMatches
+): FindMatches => ({
+  type: ActionType
+});
+
+export const clearSearch = (
+  Action: ActionTypes.clearStarShipSearch
+): ClearSearch => ({
+  type: Action
+});
+
 export const sortAlphabetically = (
   array: any[],
-  objectKey: string
+  objectKey: string,
+  ActionType:
+    | ActionTypes.sortStarShipAnalysisData
+    | ActionTypes.sortStarShipData
 ): SortArray => {
   const sortedArray = array.sort((a, b) => {
     if (a[objectKey].toLowerCase() < b[objectKey].toLowerCase()) {
@@ -102,7 +127,7 @@ export const sortAlphabetically = (
   });
 
   return {
-    type: ActionTypes.sortData,
+    type: ActionType,
     sortedArray,
     lastSorted: objectKey
   };
@@ -110,7 +135,10 @@ export const sortAlphabetically = (
 
 export const sortNummerically = (
   array: any[],
-  objectKey: string
+  objectKey: string,
+  ActionType:
+    | ActionTypes.sortStarShipAnalysisData
+    | ActionTypes.sortStarShipData
 ): SortArray => {
   const sortedArray = array.sort((a, b) => {
     if (b[objectKey] === 'unknown' || b[objectKey] === 'n/a') {
@@ -121,13 +149,19 @@ export const sortNummerically = (
   });
 
   return {
-    type: ActionTypes.sortData,
+    type: ActionType,
     sortedArray,
     lastSorted: objectKey
   };
 };
 
-export const sortConsumables = (array: any[], objectKey: string): SortArray => {
+export const sortConsumables = (
+  array: any[],
+  objectKey: string,
+  ActionType:
+    | ActionTypes.sortStarShipAnalysisData
+    | ActionTypes.sortStarShipData
+): SortArray => {
   array.sort((a, b) => {
     if (b[objectKey] === 'unknown') {
       return -1;
@@ -142,14 +176,19 @@ export const sortConsumables = (array: any[], objectKey: string): SortArray => {
     );
   });
   return {
-    type: ActionTypes.sortData,
+    type: ActionType,
     sortedArray: array,
     lastSorted: objectKey
   };
 };
 
-export const reverseSort = (array: any[]): SortArray => ({
-  type: ActionTypes.sortData,
+export const reverseSort = (
+  array: any[],
+  ActionType:
+    | ActionTypes.sortStarShipAnalysisData
+    | ActionTypes.sortStarShipData
+): SortArray => ({
+  type: ActionType,
   sortedArray: array.reverse(),
   lastSorted: ''
 });

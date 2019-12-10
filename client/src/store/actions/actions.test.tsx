@@ -13,6 +13,7 @@ import {
   sortConsumables
 } from './actions';
 import { StarShipFiltered } from '../../interfaces/starship';
+import { ActionTypes } from './types';
 
 describe('test actions with empty store', () => {
   let store: any;
@@ -61,7 +62,9 @@ describe('test actions with empty store', () => {
   });
 
   test('sets correct search term', () => {
-    store.dispatch(onSearchChange('10000'));
+    store.dispatch(
+      onSearchChange('10000', ActionTypes.searchStarShipAnalysisChange)
+    );
     const newState = store.getState();
     expect(newState.starShipAnalysis.distance).toBe('10000');
   });
@@ -80,7 +83,12 @@ describe('test actions with sample store', () => {
 
     test('add table header & check ship data filtered', () => {
       store.dispatch(
-        changeTableHeaders(sampleResponse, activeTableHeaders, 'manufacturer')
+        changeTableHeaders(
+          sampleResponse,
+          activeTableHeaders,
+          'manufacturer',
+          ActionTypes.changeStarShipAnalysisTableHeaders
+        )
       );
       const newState = store.getState();
       expect(newState.starShipAnalysis.activeDataKeys.length).toBe(4);
@@ -93,7 +101,12 @@ describe('test actions with sample store', () => {
 
     test('remove table header', () => {
       store.dispatch(
-        changeTableHeaders(sampleResponse, activeTableHeaders, 'model')
+        changeTableHeaders(
+          sampleResponse,
+          activeTableHeaders,
+          'model',
+          ActionTypes.changeStarShipAnalysisTableHeaders
+        )
       );
       const newState = store.getState();
       expect(newState.starShipAnalysis.activeDataKeys.length).toBe(2);
@@ -154,14 +167,22 @@ describe('sorting algorithms', () => {
     ];
 
     test('sort alphabetically & reverse sort', () => {
-      store.dispatch(sortAlphabetically(arrayToBeSorted, 'name'));
+      store.dispatch(
+        sortAlphabetically(
+          arrayToBeSorted,
+          'name',
+          ActionTypes.sortStarShipAnalysisData
+        )
+      );
       const newState = store.getState();
       expect(newState.starShipAnalysis.filteredStarShipData).toEqual(
         sortedByName
       );
       expect(newState.starShipAnalysis.lastSorted).toBe('name');
 
-      store.dispatch(reverseSort(sortedByName));
+      store.dispatch(
+        reverseSort(sortedByName, ActionTypes.sortStarShipAnalysisData)
+      );
       const updatedState = store.getState();
       expect(updatedState.starShipAnalysis.filteredStarShipData).toEqual(
         reverseSorted
@@ -193,14 +214,22 @@ describe('sorting algorithms', () => {
     ];
 
     test('sort nummerically & reverse sort', () => {
-      store.dispatch(sortNummerically(arrayToBeSorted, 'temp'));
+      store.dispatch(
+        sortNummerically(
+          arrayToBeSorted,
+          'temp',
+          ActionTypes.sortStarShipAnalysisData
+        )
+      );
       const newState = store.getState();
       expect(newState.starShipAnalysis.filteredStarShipData).toEqual(
         sortedByTemp
       );
       expect(newState.starShipAnalysis.lastSorted).toBe('temp');
 
-      store.dispatch(reverseSort(sortedByTemp));
+      store.dispatch(
+        reverseSort(sortedByTemp, ActionTypes.sortStarShipAnalysisData)
+      );
       const updatedState = store.getState();
       expect(updatedState.starShipAnalysis.filteredStarShipData).toEqual(
         reverseSorted
@@ -250,14 +279,22 @@ describe('sorting algorithms', () => {
     ];
 
     test('sort nummerically & reverse sort', () => {
-      store.dispatch(sortConsumables(arrayToBeSorted, 'consumable'));
+      store.dispatch(
+        sortConsumables(
+          arrayToBeSorted,
+          'consumable',
+          ActionTypes.sortStarShipAnalysisData
+        )
+      );
       const newState = store.getState();
       expect(newState.starShipAnalysis.filteredStarShipData).toEqual(
         sortedByConsumable
       );
       expect(newState.starShipAnalysis.lastSorted).toBe('consumable');
 
-      store.dispatch(reverseSort(sortedByConsumable));
+      store.dispatch(
+        reverseSort(sortedByConsumable, ActionTypes.sortStarShipAnalysisData)
+      );
       const updatedState = store.getState();
       expect(updatedState.starShipAnalysis.filteredStarShipData).toEqual(
         reverseSorted
