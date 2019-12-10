@@ -1,5 +1,4 @@
 import { generateTable } from './GenerateTable';
-import React from 'react';
 import {
   starShipNummericalColumns,
   filmNummericalColumns,
