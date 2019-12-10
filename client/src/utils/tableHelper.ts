@@ -55,3 +55,51 @@ export const starShipFilterKeys = [
   'MGLT',
   'starship_class'
 ];
+
+export const filmNummericalColumns = ['episode_id'];
+
+export const filmFilterKeys = [
+  'title',
+  'episode_id',
+  'opening_crawl',
+  'director',
+  'producer',
+  'release_date'
+];
+
+export const speciesFilterKeys = [
+  'name',
+  'classification',
+  'designation',
+  'average_height',
+  'skin_colors',
+  'hair_colors',
+  'eye_colors',
+  'average_lifespan',
+  'language'
+];
+
+export const vehicleFilterKeys = [
+  'name',
+  'model',
+  'manufacturer',
+  'cost_in_credits',
+  'length',
+  'max_atmosphering_speed',
+  'crew',
+  'passengers',
+  'cargo_capacity',
+  'consumables',
+  'vehicle_class'
+];
+
+export const peopleFilterKeys = [
+  'name',
+  'height',
+  'mass',
+  'hair_color',
+  'skin_color',
+  'eye_color',
+  'birth_year',
+  'gender'
+];
