@@ -173,7 +173,7 @@ export const sortConsumables = (
       b[objectKey] === 'unknown' ||
       b[objectKey] === 'none' ||
       b[objectKey] === 'Live food tanks' ||
-      b[objectKey] == 0
+      b[objectKey] === '0'
     ) {
       return -1;
     }
@@ -182,7 +182,7 @@ export const sortConsumables = (
       a[objectKey] === 'unknown' ||
       a[objectKey] === 'none' ||
       a[objectKey] === 'Live food tanks' ||
-      a[objectKey] == 0
+      a[objectKey] === '0'
     ) {
       return 1;
     }
