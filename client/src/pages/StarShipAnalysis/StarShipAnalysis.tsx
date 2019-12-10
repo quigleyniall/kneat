@@ -9,7 +9,8 @@ import {
   sortConsumables,
   reverseSort,
   onSearchChange,
-  setLoading
+  setLoading,
+  ActionTypes
 } from '../../store/actions';
 import {
   AddRemoveFromTable,
@@ -61,7 +62,10 @@ export class UnconnectedStarShipAnalysis extends React.Component<IProps> {
   };
 
   onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onSearchChange(event.target.value);
+    this.props.onSearchChange(
+      event.target.value,
+      ActionTypes.searchStarShipAnalysisChange
+    );
   };
 
   onCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +74,8 @@ export class UnconnectedStarShipAnalysis extends React.Component<IProps> {
     this.props.changeTableHeaders(
       allStarShips,
       activeTableHeaders,
-      tableHeader
+      tableHeader,
+      ActionTypes.changeStarShipAnalysisTableHeaders
     );
   };
 
@@ -78,15 +83,30 @@ export class UnconnectedStarShipAnalysis extends React.Component<IProps> {
     const { filteredStarShips, lastSorted } = this.props;
 
     if (lastSorted === name) {
-      return this.props.reverseSort(filteredStarShips);
+      return this.props.reverseSort(
+        filteredStarShips,
+        ActionTypes.sortStarShipAnalysisData
+      );
     }
     if (starShipNummericallyColumns.includes(name)) {
-      return this.props.sortNummerically(filteredStarShips, name);
+      return this.props.sortNummerically(
+        filteredStarShips,
+        name,
+        ActionTypes.sortStarShipAnalysisData
+      );
     }
     if (name === 'consumables') {
-      return this.props.sortConsumables(filteredStarShips, name);
+      return this.props.sortConsumables(
+        filteredStarShips,
+        name,
+        ActionTypes.sortStarShipAnalysisData
+      );
     }
-    return this.props.sortAlphabetically(filteredStarShips, name);
+    return this.props.sortAlphabetically(
+      filteredStarShips,
+      name,
+      ActionTypes.sortStarShipAnalysisData
+    );
   };
 
   render() {

@@ -4,6 +4,7 @@ import App, { UnconnectedStarShipAnalysis } from './StarShipAnalysis';
 import { storeFactory, findByTestAttr } from '../../utils/test';
 import { initialState } from '../../store/reducers/starShipAnalysis';
 import { sampleResponse } from '../../utils/sampleResponse';
+import { ActionTypes } from '../../store/actions';
 
 describe('redux properties', () => {
   const setup = (state = {}) => {
@@ -103,7 +104,10 @@ describe('unconnected app', () => {
     textInput.simulate('change', { target: { value: '4000' } });
 
     expect(onSearchChangeMock.mock.calls.length).toBe(1);
-    expect(onSearchChangeMock).toBeCalledWith('4000');
+    expect(onSearchChangeMock).toBeCalledWith(
+      '4000',
+      ActionTypes.searchStarShipAnalysisChange
+    );
   });
 
   test('runs calcNumResupplies when search button is clicked', () => {
@@ -141,7 +145,8 @@ describe('unconnected app', () => {
     expect(onChangeTableHeadersMock).toBeCalledWith(
       props.allStarShips,
       props.activeTableHeaders,
-      'name'
+      'name',
+      ActionTypes.changeStarShipAnalysisTableHeaders
     );
   });
 
@@ -154,7 +159,8 @@ describe('unconnected app', () => {
     expect(sortAlphabeticallyMock.mock.calls.length).toBe(1);
     expect(sortAlphabeticallyMock).toBeCalledWith(
       props.filteredStarShips,
-      'name'
+      'name',
+      ActionTypes.sortStarShipAnalysisData
     );
   });
 
