@@ -1,8 +1,8 @@
 import { ActionTypes, Action } from '../actions';
-import { starShipFilterKeys } from '../../utils/tableHelper';
+import { starShipAnalysisFilterKeys } from '../../utils/tableHelper';
 import { StarShipResponse, StarShipFiltered } from '../../interfaces/starship';
 
-export interface StarShipState {
+export interface StarShipAnalysis {
   allStarShipData: StarShipResponse[];
   filteredStarShipData: StarShipFiltered[];
   lastSorted: string;
@@ -23,30 +23,30 @@ export const initialState = {
     'MGLT',
     'number_of_resupplies'
   ],
-  allResponseKeys: starShipFilterKeys,
+  allResponseKeys: starShipAnalysisFilterKeys,
   distance: '',
   loading: false
 };
 
 const starShipAnalysis = (
-  state: StarShipState = initialState,
+  state: StarShipAnalysis = initialState,
   action: Action
 ) => {
   switch (action.type) {
     case ActionTypes.makeApiCall:
       return { ...state, allStarShipData: action.payload };
 
-    case ActionTypes.searchChange:
+    case ActionTypes.searchStarShipAnalysisChange:
       return { ...state, distance: action.payload };
 
-    case ActionTypes.changeTableHeaders:
+    case ActionTypes.changeStarShipAnalysisTableHeaders:
       return {
         ...state,
         filteredStarShipData: action.filteredData,
         activeDataKeys: action.newActiveKeys
       };
 
-    case ActionTypes.sortData:
+    case ActionTypes.sortStarShipAnalysisData:
       return {
         ...state,
         filteredStarShipData: action.sortedArray,

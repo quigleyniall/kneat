@@ -12,7 +12,7 @@ test('stores response from api call', () => {
 
 test('stores correct search term', () => {
   const result = starShipAnalysis(initialState, {
-    type: ActionTypes.searchChange,
+    type: ActionTypes.searchStarShipAnalysisChange,
     payload: '3000'
   });
   expect(result.distance).toBe('3000');
@@ -20,7 +20,7 @@ test('stores correct search term', () => {
 
 test('chage table headers and filters data', () => {
   const result = starShipAnalysis(initialState, {
-    type: ActionTypes.changeTableHeaders,
+    type: ActionTypes.changeStarShipAnalysisTableHeaders,
     filteredData: sampleResponse,
     newActiveKeys: ['name']
   });
@@ -30,7 +30,7 @@ test('chage table headers and filters data', () => {
 
 test('stores sorted data', () => {
   const result = starShipAnalysis(initialState, {
-    type: ActionTypes.sortData,
+    type: ActionTypes.sortStarShipAnalysisData,
     sortedArray: sampleResponse,
     lastSorted: 'name'
   });
